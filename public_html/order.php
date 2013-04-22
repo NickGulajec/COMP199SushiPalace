@@ -49,6 +49,17 @@ $query = mysql_query ( "
 		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
 		<!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" /><![endif]-->
+		
+		<style> 
+			table
+			{
+			width:80%;
+			}
+			td
+			{
+			min-width:20%;
+			}
+		</style>
 	</head>
 	<body class="left-sidebar">
 
@@ -75,10 +86,8 @@ $query = mysql_query ( "
 													<li><a href="login.html">Login</a></li>  <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
 												</ul>
 											</nav>
-									
 									</div>
 								</header>
-
 						</div>
 					</div>
 				</div>
@@ -99,7 +108,7 @@ $query = mysql_query ( "
 													<h2>Sushi Palace</h2>
 												</header>
 												<p>Our goal in life: to make the best sushi in the world!
-Enjoy any of our sushi! open 10:00 to 20:00 every day</p>
+													Enjoy any of our sushi! open 10:00 to 20:00 every day</p>
 												<footer>
 													<a href="#" class="button button-icon button-icon-info">Order Sushi</a>
 												</footer>
@@ -134,39 +143,69 @@ Enjoy any of our sushi! open 10:00 to 20:00 every day</p>
 													<span class="byline">Order Here</span>
 												</header>
 												
+												<!-- 
 												<span class="image image"><img src="images/C789_unitoikuramaguro.jpg" alt="Yum" /></span>
-												
-												<h3>Header 3</h3>
+												-->
 												
 												<?php
 												if ( $query ) {
-													print "<table border=1><tr>";
+													print "<form method='post' action='addToCart.php'>";
+													print "<table><tr>";
 													mysql_data_seek ( $query, 0 );
 													$x=mysql_fetch_assoc( $query );
 													
 													foreach ( array_keys( $x ) as $k ) {
-														print "<td><b> $k </b></td>";
+														print "<td><h3> $k </h3></td>";
 													}
-													
+													print "<td><h3> Qty </h3></td>";
 													print "</tr><tr>";
 													
 													foreach ($x as $v) {
 														print "<td>$v</td>";
 													}
 													
+													$row_key = 1; // very hacked way to label the select quantity boxes for processing
+													print "<td>
+															<select name=\"$row_key\">
+															<option value=\"0\">&nbsp&nbsp&nbsp</option>
+															<option value=\"1\">1</option>
+															<option value=\"2\">2</option>
+															<option value=\"3\">3</option>
+															<option value=\"4\">4</option>
+															<option value=\"5\">5</option>
+															<option value=\"6\">6</option>
+															<option value=\"7\">7</option>
+															<option value=\"8\">8</option>
+															<option value=\"9\">9</option>
+															</select>
+															</td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
+													$row_key++;
 													print "</tr><tr>";
+													
 													
 													while ($x=mysql_fetch_row($query)) {
 														foreach ($x as $v) {
 															print "<td>$v</td>";
 														}
+														print "<td>
+																<select name=\"$row_key\">
+																<option value=\"0\" selected>&nbsp&nbsp&nbsp</option>
+																<option value=\"1\">1</option>
+																<option value=\"2\">2</option>
+																<option value=\"3\">3</option>
+																</select>
+															    </td><td></td>";
+														$row_key++;
 														print "</tr><tr>";
 													}
 													
-													print "</table><p>";
+													print "<td></td><td><input value=\"Add To Order\" type=\"submit\" class=\"button button-icon button-icon-rarrow\"></td></tr>";
 													
-												} else {
-												print "<p>Database Error";
+													print "</table><p>";
+													print "</form>";
+													
+												} else {	// ( !$query )
+													print "<p>Database Error";
 												}
 												
 												?>
@@ -187,7 +226,7 @@ Enjoy any of our sushi! open 10:00 to 20:00 every day</p>
 					<div class="row">
 						<div class="12u">
 							<div id="copyright">
-								&copy; Untitled. All rights reserved | Images: <a href="http://fotogrph.com/">Fotogrph</a> + <a href="http://iconify.it/">Iconify.it</a> | Design: <a href="http://html5up.net/">HTML5 Up!</a>
+								&copy; 2013 ConFulGul  All rights reserved | Images: <a href="http://fotogrph.com/">Fotogrph</a> + <a href="http://iconify.it/">Iconify.it</a> | Design Template: <a href="http://html5up.net/">HTML5 Up!</a>
 							</div>
 						</div>
 					</div>
