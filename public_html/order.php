@@ -16,9 +16,8 @@ if (!$db_selected) {
 $query = mysql_query ( "
 	SELECT category, product_id, product_name AS 'Item', price AS 'Price'
 	FROM PRODUCT_TBL
-	ORDER BY category
+	ORDER BY category, price
 " );
-// mysql_select_db("sushiC199", $LinkID);
 
 ?>
 
@@ -53,16 +52,21 @@ $query = mysql_query ( "
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
 		<!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" /><![endif]-->
 		
-		<style> 
+		
+		<!-- page specific table style -->
+		<style>  
 			table
 			{
-			width:80%;
+				width:80%;
 			}
 			td
 			{
-			min-width:20%;
+				padding:1px 7px 2px 7px;
 			}
 		</style>
+		
+		
+		
 	</head>
 	<body class="left-sidebar">
 
@@ -95,8 +99,7 @@ $query = mysql_query ( "
 					</div>
 				</div>
 			</div>
-			
-		<!-- Main Wrapper -->
+				<!-- Main Wrapper -->
 			<div id="main-wrapper">
 				<div class="main-wrapper-style2">
 					<div class="inner">
@@ -152,34 +155,34 @@ $query = mysql_query ( "
 												-->
 												
 												<?php
+												
 												if ( $query ) {
+												
 													print "<form method='post' action='addToCart.php'>";
 													print "<table><tr>";
 													
 													mysql_data_seek ( $query, 0 );
-													$x=mysql_fetch_assoc( $query );
+													$fetched_row = mysql_fetch_assoc( $query );
+													
 													$row_label = "";
 													$category = "";
 													$labeled = false;
-													// Table Headers
 													
-													// foreach ( array_keys( $x ) as $k ) {
-														// print "<td><h3> $k </h3></td>";
-													// }
-													// print "<td><h3> Qty </h3></td>";
-													// print "</tr><tr>";
+													// Ex-Table Headers, Mayumi you may still need header code here
+													
+													// ...
 																										
 													// Gaurenteed first row of results
-													foreach ( $x as $v ) {
+													foreach ( $fetched_row as $v ) {
 														
-														if ( $category == "" ) {
+														if ( $category == "" ) {		// the 
 														
 															$category = $v;
 															print "<td><h3> $category </h3></td></tr>";
 															
 														} else {
 														
-															if ( $labeled == false ) {		// need to label the qty select with PRODUCT_TBL primary key
+															if ( $labeled == false ) {		// need to label the qty select box with PRODUCT_TBL primary key
 																print "<td></td>";
 																$row_label = $v;
 																$labeled = true;
@@ -203,7 +206,7 @@ $query = mysql_query ( "
 															<option value=\"8\">8</option>
 															<option value=\"9\">9</option>
 															</select>
-															</td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
+															</td>";
 													print "</tr><tr>";
 													
 													$row_label = "";
@@ -212,9 +215,9 @@ $query = mysql_query ( "
 													$labeled = false;
 													
 													// All other rows retrieved
-													while ( $x=mysql_fetch_row ( $query ) ) {
+													while ( $fetched_row = mysql_fetch_row ( $query ) ) {
 													
-														foreach ( $x as $v ) {
+														foreach ( $fetched_row as $v ) {
 															
 															if ( $category == "" ) {
 															
@@ -252,7 +255,7 @@ $query = mysql_query ( "
 															<option value=\"8\">8</option>
 															<option value=\"9\">9</option>
 															</select>
-															</td><td></td>";
+															</td>";
 														print "</tr><tr>";
 													
 														$row_label = "";
@@ -261,7 +264,7 @@ $query = mysql_query ( "
 														$labeled = false;
 													}  // end while
 													
-													print "<td></td><td><input  type=\"submit\" class=\"button button-icon button-icon-rarrow\"></td></tr>";
+													print "<td><p><td></tr> <tr> <td></td> <td></td> <td><input type=\"submit\" class=\"button button-icon button-icon-rarrow\"></td></tr>";
 													
 													print "</table><p>";
 													print "</form>";
@@ -292,5 +295,7 @@ $query = mysql_query ( "
 					</div>
 				</footer>
 			</div>
+
 	</body>
 </html>
+
