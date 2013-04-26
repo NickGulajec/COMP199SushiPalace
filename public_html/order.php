@@ -14,8 +14,9 @@ if (!$db_selected) {
     die('Could not select database: ' . mysql_error());
 }
 $query = mysql_query ( "
-	SELECT product_name AS 'Item', price AS 'Price'
+	SELECT category, product_id, product_name AS 'Item', price AS 'Price'
 	FROM PRODUCT_TBL
+	ORDER BY category
 " );
 // mysql_select_db("sushiC199", $LinkID);
 
@@ -102,10 +103,10 @@ $query = mysql_query ( "
 						<div class="5grid-layout">
 							<div class="row">
 								<div class="4u">
+								
+									<!-- Sidebar -->
 									<div id="sidebar">
 
-										<!-- Sidebar -->
-									
 											<section>
 												<header class="major">
 													<h2>Sushi Palace</h2>
@@ -154,22 +155,43 @@ $query = mysql_query ( "
 												if ( $query ) {
 													print "<form method='post' action='addToCart.php'>";
 													print "<table><tr>";
+													
 													mysql_data_seek ( $query, 0 );
 													$x=mysql_fetch_assoc( $query );
+													$row_label = "";
+													$category = "";
+													$labeled = false;
+													// Table Headers
 													
-													foreach ( array_keys( $x ) as $k ) {
-														print "<td><h3> $k </h3></td>";
-													}
-													print "<td><h3> Qty </h3></td>";
-													print "</tr><tr>";
+													// foreach ( array_keys( $x ) as $k ) {
+														// print "<td><h3> $k </h3></td>";
+													// }
+													// print "<td><h3> Qty </h3></td>";
+													// print "</tr><tr>";
+																										
+													// Gaurenteed first row of results
+													foreach ( $x as $v ) {
+														
+														if ( $category == "" ) {
+														
+															$category = $v;
+															print "<td><h3> $category </h3></td></tr>";
+															
+														} else {
+														
+															if ( $labeled == false ) {		// need to label the qty select with PRODUCT_TBL primary key
+																print "<td></td>";
+																$row_label = $v;
+																$labeled = true;
+														
+															} else {
+																print "<td> $v </td>";
+															}
+														}
+													}  // end foreach
 													
-													foreach ($x as $v) {
-														print "<td>$v</td>";
-													}
-													
-													$row_key = 1; // very hacked way to label the select quantity boxes for processing
 													print "<td>
-															<select name=\"$row_key\">
+															<select name=\"$row_label\">
 															<option value=\"0\">&nbsp&nbsp&nbsp</option>
 															<option value=\"1\">1</option>
 															<option value=\"2\">2</option>
@@ -182,31 +204,62 @@ $query = mysql_query ( "
 															<option value=\"9\">9</option>
 															</select>
 															</td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
-													$row_key++;
 													print "</tr><tr>";
 													
+													$row_label = "";
+													$category_old = $category;
+													$category = "";
+													$labeled = false;
 													
-													while ($x=mysql_fetch_row($query)) {
-														foreach ($x as $v) {
-															print "<td>$v</td>";
+													// All other rows retrieved
+													while ( $x=mysql_fetch_row ( $query ) ) {
+													
+														foreach ( $x as $v ) {
+															
+															if ( $category == "" ) {
+															
+																$category = $v;
+																
+																if ( $category != $category_old ) {
+																
+																	print "<td><h3> $category </h3></td></tr>";
+																
+																}
+																
+															} else {
+															
+																if ( $labeled == false ) {		// need to label the qty select with PRODUCT_TBL primary key
+																	print "<td></td>";		// this table column is for categories only
+																	$row_label = $v;
+																	$labeled = true;
+															
+																} else {
+																	print "<td> $v </td>";
+																}
+															}
 														}
+															
 														print "<td>
-																<select name=\"$row_key\">
-																<option value=\"0\" selected>&nbsp&nbsp&nbsp</option>
-																<option value=\"1\">1</option>
-																<option value=\"2\">2</option>
-																<option value=\"3\">3</option>
-																<option value=\"4\">4</option>
-																<option value=\"5\">5</option>
-																<option value=\"6\">6</option>
-																<option value=\"7\">7</option>
-																<option value=\"8\">8</option>
-																<option value=\"9\">9</option>
-																</select>
-															    </td><td></td>";
-														$row_key++;
+															<select name=\"$row_label\">
+															<option value=\"0\" selected>&nbsp&nbsp&nbsp</option>
+															<option value=\"1\">1</option>
+															<option value=\"2\">2</option>
+															<option value=\"3\">3</option>
+															<option value=\"4\">4</option>
+															<option value=\"5\">5</option>
+															<option value=\"6\">6</option>
+															<option value=\"7\">7</option>
+															<option value=\"8\">8</option>
+															<option value=\"9\">9</option>
+															</select>
+															</td><td></td>";
 														print "</tr><tr>";
-													}
+													
+														$row_label = "";
+														$category_old = $category;
+														$category = "";
+														$labeled = false;
+													}  // end while
 													
 													print "<td></td><td><input  type=\"submit\" class=\"button button-icon button-icon-rarrow\"></td></tr>";
 													
@@ -225,8 +278,7 @@ $query = mysql_query ( "
 						</div>
 					</div>
 				</div>
-			</div>
-				
+			</div>			
 
 		<!-- Footer Wrapper -->
 			<div id="footer-wrapper">
