@@ -94,7 +94,8 @@ $query = mysql_query ( "
 					</div>
 				</div>
 			</div>
-				<!-- Main Wrapper -->
+			
+		<!-- Main Wrapper -->
 			<div id="main-wrapper">
 				<div class="main-wrapper-style2">
 					<div class="inner">
@@ -218,7 +219,6 @@ $query = mysql_query ( "
 												
 												?>
 											</article>
-								
 									</div>
 								</div>
 							</div>
@@ -240,7 +240,5 @@ $query = mysql_query ( "
 					</div>
 				</footer>
 			</div>
-
 	</body>
 </html>
-
