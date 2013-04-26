@@ -1,3 +1,38 @@
+<?php
+
+
+
+// Connect to the MySQL server.
+include '../credentials.php';
+
+$LinkID = mysql_connect($req_server, $req_username, $req_password);
+
+// Die if no connect
+if (!$LinkID) {
+	die('Could not connect: ' . mysql_error());
+}
+// Choose the DB and run a query.
+//mysql_select_db("comp170", $LinkID);
+mysql_select_db('sushiC199');
+
+// Assemble the SQL query
+$sql = "SELECT product_name as ITEM, price as PRICE FROM PRODUCT_TBL";
+
+// Excute sql query
+$result = mysql_query ($sql);
+
+// If the query returned error, display error the msg
+if (!$result) {
+	echo "Could not successfully run query ($sql) from DB ";
+	exit;
+}
+// If the query returned no rows, display the error msg
+if (mysql_num_rows($result) == 0) {
+	echo "No rows found, nothing to print";
+	exit;
+}
+
+?>
 <!DOCTYPE HTML>
 <!--
 	ZeroFour 1.0 by HTML5 Up!
@@ -6,10 +41,10 @@
 -->
 <html>
 	<head>
-		<title>Left Sidebar - SUSHI PALACE!</title>
+		<title>Sushi Palace!</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
+		<meta name="description" content="Order take-out or delivery from Sushi Palace" />
+		<meta name="keywords" content="Sushi Palace Order" />
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800" rel="stylesheet" type="text/css" />
 		<script src="js/jquery-1.8.3.min.js"></script>
 		<script src="css/5grid/init.js?use=mobile,desktop,1000px&amp;mobileUI=1&amp;mobileUI.theme=none"></script>
@@ -40,14 +75,14 @@
 									<div class="inner">
 									
 										<!-- Logo -->
-											<h1><a href="#" class="mobileUI-site-name">SUSHI PALACE</a></h1>
+											<h1><a href="#" class="mobileUI-site-name">Sushi Palace</a></h1>
 										
 	<!-- Nav -->
 											<nav id="nav" class="mobileUI-site-nav">
 												<ul>
 													<li><a href="index.html">Home</a></li>
-													<li><a href="menu.html">Menu</a></li>
-													<li class="current_page_item"><a href="order.html">Order</a></li>
+													<li class="current_page_item"><a href="menu.php">Menu</a></li>
+													<li><a href="order.php">Order</a></li>
 													<li><a href="about.html">About</a></li>
 													<li><a href="login.html">Login</a></li>  <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
 												</ul>
@@ -75,7 +110,7 @@
 									
 											<section>
 												<header class="major">
-													<h2>Sushi Palace</h2>
+													<h2>SUSHI PALACE</h2>
 												</header>
 												<p>Our goal in life: to make the best sushi in the world!
 Enjoy any of our sushi! open 10:00 to 20:00 every day</p>
@@ -119,6 +154,44 @@ Monday and Friday get $1 off for party platter!!</span>
 																							
 						
 <!-- Menu -->
+
+<?php
+	// Display the results
+
+	// Reset the result pointer and display in a table with titles
+	mysql_data_seek ($result, 0);
+	// Fetch a row with the column labels
+	$x=mysql_fetch_assoc($result);
+	// Print the column labels
+	print "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" border=\"0\"><tr><span class=\"byline\">";
+	foreach (array_keys($x) as $k) {
+		print "<td><h3> $k </h3></td>";
+
+	}
+	print "</span></tr><tr>";
+	// Print the values for the first row
+	foreach ($x as $v) {
+	//while ($row = mysql_fetch_assoc($result)) {
+		print "<td width=\"80%\">$v</td>";
+		//print "<td width=\"18%\" align=\"right\">$v</td>";
+
+	}
+	print "</tr><tr>";
+	 //Print the rest of the rows.
+	while ($x=mysql_fetch_row($result)) {
+		foreach ($x as $v) {
+			print "<td width=\"80%\">$v</td>";
+		//print "<td width=\"82%\">$v</td>";
+		//print "<td width=\"18%\" align=\"right\">$v</td>";
+
+		}
+	print "</tr><tr>";
+	}
+?>
+</tr></table>
+
+
+<!--
  <span class="byline"><h3>Appetizers</h3></span>
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
@@ -221,7 +294,7 @@ Monday and Friday get $1 off for party platter!!</span>
 </table>
 
 
-
+-->
 
 									</article>
 
@@ -269,8 +342,8 @@ Monday and Friday get $1 off for party platter!!</span>
 									<h2>Menu</h2>
 									<ul class="style2">
 			<li><a href="index.html">Home</a></li>
-															<li><a href="menu.html">Menu</a></li>
-<li><a href="order.html">Order</a></li>
+															<li><a href="menu.php">Menu</a></li>
+<li><a href="order.php">Order</a></li>
 <li><a href="about.html">About</a></li>
 <li><a href="login.html">Login</li>
 									</ul>

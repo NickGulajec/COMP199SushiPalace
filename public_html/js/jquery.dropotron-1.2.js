@@ -408,7 +408,7 @@
 				})
 				.keypress(function(e) {
 					if (!isLocked
-					&&	e.keyCode == 27) {
+					&&	e.keyCode == 27) {
 						e.preventDefault();
 						_top.trigger('doCollapseAll');
 					}
