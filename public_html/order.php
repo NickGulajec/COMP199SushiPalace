@@ -81,7 +81,7 @@ $query = mysql_query ( "
 									<div class="inner">
 									
 										<!-- Logo -->
-											<h1><a href="#" class="mobileUI-site-name">Sushi Palace</a></h1>
+											<h1><a href="index.html" class="mobileUI-site-name">Sushi Palace</a></h1>
 										
 										<!-- Nav -->
 											<nav id="nav" class="mobileUI-site-nav">
@@ -110,31 +110,31 @@ $query = mysql_query ( "
 									<!-- Sidebar -->
 									<div id="sidebar">
 
-											<section>
-												<header class="major">
-													<h2>Sushi Palace</h2>
-												</header>
-												<p>Our goal in life: to make the best sushi in the world!
-													Enjoy any of our sushi! open 10:00 to 20:00 every day</p>
-												<footer>
-													<a href="#" class="button button-icon button-icon-info">Order Sushi</a>
-												</footer>
-											</section>
-
-											<section>
-												<header class="major">
-													<h2>SUSHI PALACE</h2>
-												</header>
-												<ul class="style2">
-													<li>1111 palace st St</li>
-													<li>Victoria, B.C. V8M 5J7</li>
-													<li>250-777-777</li>
-													<li><a href="#">order@sushipalace.ca</a></li>
-																								</ul>
-												<footer>
-													<a href="#" class="button button-icon button-icon-rarrow">Contact us</a>
-												</footer>
-											</section>
+										<section>
+											<header>
+												<br>All our seafood is wild and locally or regionally sourced from OceanWise partners.
+											</header>
+											Local Partnerships: <br>
+											<ul>
+												<li><a href="http://www.finestatsea.com/">Finest At Sea</a></li>
+												<li><a href="http://www.floatingfishstore.com/">The Fish Store</a></li>
+												<li><a href="http://www.1fish2fish.ca/">1Fish2Fish</a></li>
+											</ul>
+											<p>
+											1111 Palace St</br>
+											Victoria B.C.  V8M 5J7</br>
+											250-777-777</br>
+											Open 10am - 8pm every day!</br>
+											<a href="mailto:order@sushipalace.ca">order@sushipalace.ca</a></br>
+											<p>
+											<footer>
+												<h4>MyPalace</h4>
+												
+												<p>Login to your account</p>
+												
+												<a href="login.html" class="button button-icon button-icon-info">Login</a>
+											</footer>
+										</section>
 								
 									</div>
 								</div>
@@ -145,9 +145,8 @@ $query = mysql_query ( "
 										<!-- Content -->
 									
 											<article>
-												<header class="major">
-													<h2>Sushi Palace</h2>
-													<span class="byline">Order Here</span>
+												<header>
+													<center><h3>Select Items to add to your order</h3></center>
 												</header>
 												
 												<!-- 
@@ -161,87 +160,49 @@ $query = mysql_query ( "
 													print "<form method='post' action='addToCart.php'>";
 													print "<table><tr>";
 													
-													mysql_data_seek ( $query, 0 );
+													mysql_data_seek ( $query, 0 );					//$query defined up top
 													$fetched_row = mysql_fetch_assoc( $query );
 													
-													$row_label = "";
+													$row_label = "";		// state variables for operating on current row
 													$category = "";
+													$category_old = "";
 													$labeled = false;
 													
 													// Ex-Table Headers, Mayumi you may still need header code here
 													
 													// ...
 																										
-													// Gaurenteed first row of results
-													foreach ( $fetched_row as $v ) {
-														
-														if ( $category == "" ) {		// the 
-														
-															$category = $v;
-															print "<td><h3> $category </h3></td></tr>";
+													while ( $fetched_row = mysql_fetch_row ( $query ) ) {	// Go through the query results one row at a time
+													
+														foreach ( $fetched_row as $v ) {	// Go through each value of the returned row in order.  
+																							// The values (in order) are: category, product_id, product_name, and price.
+																							// Their order is important to the foreach flow.
 															
-														} else {
-														
-															if ( $labeled == false ) {		// need to label the qty select box with PRODUCT_TBL primary key
-																print "<td></td>";
-																$row_label = $v;
-																$labeled = true;
-														
-															} else {
-																print "<td> $v </td>";
-															}
-														}
-													}  // end foreach
-													
-													print "<td>
-															<select name=\"$row_label\">
-															<option value=\"0\">&nbsp&nbsp&nbsp</option>
-															<option value=\"1\">1</option>
-															<option value=\"2\">2</option>
-															<option value=\"3\">3</option>
-															<option value=\"4\">4</option>
-															<option value=\"5\">5</option>
-															<option value=\"6\">6</option>
-															<option value=\"7\">7</option>
-															<option value=\"8\">8</option>
-															<option value=\"9\">9</option>
-															</select>
-															</td>";
-													print "</tr><tr>";
-													
-													$row_label = "";
-													$category_old = $category;
-													$category = "";
-													$labeled = false;
-													
-													// All other rows retrieved
-													while ( $fetched_row = mysql_fetch_row ( $query ) ) {
-													
-														foreach ( $fetched_row as $v ) {
+															if ( $category == "" ) {		// every returned row has a category.  But we only want to display it the first time we see it
 															
-															if ( $category == "" ) {
-															
-																$category = $v;
+																$category = $v;				// remember this row's category
 																
-																if ( $category != $category_old ) {
+																if ( $category != $category_old ) {		// compare it to the previous row's category
 																
-																	print "<td><h3> $category </h3></td></tr>";
+																	print "<td><h3> $category </h3></td></tr>";		// only if it's changed, print it on a row by itself
 																
 																}
 																
-															} else {
+															} else {	// $category is displayed, so we can now print the row
 															
-																if ( $labeled == false ) {		// need to label the qty select with PRODUCT_TBL primary key
-																	print "<td></td>";		// this table column is for categories only
-																	$row_label = $v;
-																	$labeled = true;
+																if ( $labeled == false ) {		// select box for current row has not been labelled yet
+																								
+																	print "<td></td>";		// maybe don't need this?? will test later..
+																	$row_label = $v;		
+																	$labeled = true;		//  We've now handled the category and product_id.  
 															
-																} else {
+																} else {					// This else handles the remaining fields, product_name and price
+																
 																	print "<td> $v </td>";
 																}
 															}
 														}
-															
+																				// beside each displayed product_name and price we need a select quantity box
 														print "<td>
 															<select name=\"$row_label\">
 															<option value=\"0\" selected>&nbsp&nbsp&nbsp</option>
@@ -256,20 +217,25 @@ $query = mysql_query ( "
 															<option value=\"9\">9</option>
 															</select>
 															</td>";
+															
 														print "</tr><tr>";
 													
-														$row_label = "";
-														$category_old = $category;
+														$row_label = "";				// get ready for the next row
+														$category_old = $category;	
 														$category = "";
 														$labeled = false;
-													}  // end while
+														
+													}  // end while (get next row of query)
 													
+													
+													// Form Submit Button
 													print "<td><p><td></tr> <tr> <td></td> <td></td> <td><input type=\"submit\" class=\"button button-icon button-icon-rarrow\"></td></tr>";
 													
 													print "</table><p>";
 													print "</form>";
 													
 												} else {	// ( !$query )
+												
 													print "<p>Database Error";
 												}
 												
