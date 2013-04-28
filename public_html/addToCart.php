@@ -106,46 +106,150 @@
 									<!-- Content -->
 									
 										<article>
-											<p><?php print_r($_POST);?></p>
+											<p><?php //print_r($_POST);?></p>
 	
 											<?php
+											if ($_SESSION['ordered'] = null) {
+												print ("Cart is empty");
+												print "<a href=\"order.html#\" class=\"button button-big button-icon button-icon-rarrow\">Order</a>";
+											}
+											
+											if ($_SESSION['ordered'] = 0) {
+												print ("Cart is empty");
+												print "<a href=\"order.html#\" class=\"button button-big button-icon button-icon-rarrow\">Order</a>";
+											}
+											
 											if ( isset ( $_POST ) ) {
 												$_SESSION = $_POST;
 		
 												// or put it all in an array like this:
 												$_SESSION['ordered'] = $_POST;
 											}
-	
-	
-											echo ( $_SESSION );
-	
-											print_r ( $_SESSION );
-	
-	
-											echo($_SESSION[1]."<br />");		// try ordering some of the first 3 items on the menu, should show up here.
-											echo($_SESSION[2]."<br />");
-											echo($_SESSION[3]."<p />");
-	
-											print_r ( $_SESSION[1]."<br />" );
-											print_r ( $_SESSION[2]."<br />" );
-											print_r ( $_SESSION[3]."<p />" );
-	
-	
-											echo ( $_SESSION['ordered']."<br />" );
-											print_r ( $_SESSION ['ordered']."<p />" );
-	
-	
-											echo ( $_SESSION['ordered'][1]."<br />"  );
-											print_r ( $_SESSION ['ordered'][1]."<p />" );
-	
-											if ( $_SESSION['ordered'][1] > 0 ) {
-												echo ("You ordered the first item from the list! <br />");
+											
+											if ( $_SESSION['ordered'][27] > 0 ) { 
+												echo ("Miso Soup: "); 
+												echo ($_SESSION[27]."<br />");
 											}
-
-											if ( $_SESSION[1] > 0 ) {
-												echo ("You ordered the first item from the list and didn't put the variables in an array in the SESSION array!");
-											}	
+											if ( $_SESSION['ordered'][28] > 0 ) { 
+												echo ("Agedashi Tofu: "); 
+												echo ($_SESSION[28]."<br />");
+											}
+											if ( $_SESSION['ordered'][24] > 0 ) { 
+												echo ("Tempura: "); 
+												echo ($_SESSION[24]."<br />");
+											}
+											if ( $_SESSION['ordered'][26] > 0 ) { 
+												echo ("Katsu Don: "); 
+												echo ($_SESSION[26]."<br />");
+											}
+											if ( $_SESSION['ordered'][25] > 0 ) { 
+												echo ("Beef Teriyaki : "); 
+												echo ($_SESSION[25]."<br />");
+											}
+											if ( $_SESSION['ordered'][29] > 0 ) { 
+												echo ("Platter A: "); 
+												echo ($_SESSION[29]."<br />");
+											}
+											if ( $_SESSION['ordered'][30] > 0 ) { 
+												echo ("Platter B: "); 
+												echo ($_SESSION[30]."<br />");
+											}
+											if ( $_SESSION['ordered'][1] > 0 ) { 
+												echo ("KAPPA MAKI: "); 
+												echo ($_SESSION[1]."<br />");
+											}
+											if ( $_SESSION['ordered'][2] > 0 ) { 
+												echo ("OSHINKO MAKI: "); 
+												echo ($_SESSION[2]."<br />");
+											}
+											if ( $_SESSION['ordered'][4] > 0 ) { 
+												echo ("TEKKA MAKI: "); 
+												echo ($_SESSION[4]."<br />");
+											}
+											if ( $_SESSION['ordered'][3] > 0 ) { 
+												echo ("SAKE MAKI: "); 
+												echo ($_SESSION[3]."<br />");
+											}
+											if ( $_SESSION['ordered'][10] > 0 ) { 
+												echo ("AVOCADO ROLL: "); 
+												echo ($_SESSION[10]."<br />");
+											}
+											if ( $_SESSION['ordered'][5] > 0 ) { 
+												echo ("NEGITORO: "); 
+												echo ($_SESSION[5]."<br />");
+											}
+											if ( $_SESSION['ordered'][9] > 0 ) { 
+												echo ("CALIFORNIA ROLL: "); 
+												echo ($_SESSION[9]."<br />");
+											}
+											if ( $_SESSION['ordered'][12] > 0 ) { 
+												echo ("VEGETABLE ROLL  : "); 
+												echo ($_SESSION[12]."<br />");
+											}
+											if ( $_SESSION['ordered'][11] > 0 ) { 
+												echo ("YAM ROLL: "); 
+												echo ($_SESSION[11]."<br />");
+											}
+											if ( $_SESSION['ordered'][15] > 0 ) { 
+												echo ("CANADIAN ROLL: "); 
+												echo ($_SESSION[15]."<br />");
+											}
+											if ( $_SESSION['ordered'][14] > 0 ) { 
+												echo ("DYNAMITE ROLL : "); 
+												echo ($_SESSION[14]."<br />");
+											}
+											if ( $_SESSION['ordered'][17] > 0 ) { 
+												echo ("VANCOUVER ROLL: "); 
+												echo ($_SESSION[17]."<br />");
+											}
+											if ( $_SESSION['ordered'][18] > 0 ) { 
+												echo ("B.C. ROLL: "); 
+												echo ($_SESSION[18]."<br />");
+											}
+											if ( $_SESSION['ordered'][13] > 0 ) { 
+												echo ("YAMAKADO ROLL: "); 
+												echo ($_SESSION[13]."<br />");
+											}
+											if ( $_SESSION['ordered'][6] > 0 ) { 
+												echo ("FUTO MAKI: "); 
+												echo ($_SESSION[6]."<br />");
+											}
+											if ( $_SESSION['ordered'][7] > 0 ) { 
+												echo ("SAKURA ROLL: "); 
+												echo ($_SESSION[7]."<br />");
+											}
+											if ( $_SESSION['ordered'][23] > 0 ) { 
+												echo ("NINJA ROLL: "); 
+												echo ($_SESSION[23]."<br />");
+											}
+											if ( $_SESSION['ordered'][21] > 0 ) { 
+												echo ("HOUSE SPECIAL: "); 
+												echo ($_SESSION[21]."<br />");
+											}
+											if ( $_SESSION['ordered'][16] > 0 ) { 
+												echo ("VICTORIA ROLL: "); 
+												echo ($_SESSION[16]."<br />");
+											}
+											if ( $_SESSION['ordered'][8] > 0 ) { 
+												echo ("ROB'S ROLL: "); 
+												echo ($_SESSION[8]."<br />");
+											}
+											if ( $_SESSION['ordered'][22] > 0 ) { 
+												echo ("SCALLOP ROLL: "); 
+												echo ($_SESSION[22]."<br />");
+											}
+											if ( $_SESSION['ordered'][19] > 0 ) { 
+												echo ("TOKYO ROLL: "); 
+												echo ($_SESSION[19]."<br />");
+											}
+											if ( $_SESSION['ordered'][20] > 0 ) { 
+												echo ("SPIDER ROLL: "); 
+												echo ($_SESSION[20]."<br />");
+											}
+											print "<a href=\"order.html#\" class=\"button button-big button-icon button-icon-rarrow\">Change order</a>";
+											print "<a href=\"#\" class=\"button button-big button-icon button-icon-check\">Buy</a>";
 											?>
+											
 										</article>
 								</div>
 							</div>
