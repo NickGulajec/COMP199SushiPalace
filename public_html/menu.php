@@ -16,7 +16,7 @@ if (!$LinkID) {
 mysql_select_db('sushiC199');
 
 // Assemble the SQL query
-$sql = "SELECT product_name as ITEM, price as PRICE FROM PRODUCT_TBL";
+$sql = "SELECT category as CATEGORY, product_name as ITEM, price as PRICE, description FROM PRODUCT_TBL ORDER BY category, price";
 
 // Excute sql query
 $result = mysql_query ($sql);
@@ -129,9 +129,14 @@ Enjoy any of our sushi! open 10:00 to 20:00 every day</p>
 													<li>250-777-777</li>
 													<li><a href="#">order@sushipalace.ca</a></li>
 																								</ul>
-												<footer>
-													<a href="#" class="button button-icon button-icon-rarrow">Contact us</a>
-												</footer>
+										<footer>
+											<h4>MyPalace</h4>
+											
+											<p>Login to your account</p>
+											
+											<a href="login.html" class="button button-icon button-icon-info">Login</a>
+										</footer>
+
 											</section>
 								
 									</div>
@@ -158,143 +163,51 @@ Monday and Friday get $1 off for party platter!!</span>
 <?php
 	// Display the results
 
+	$category = "";
+											$category_old = "";
+
 	// Reset the result pointer and display in a table with titles
 	mysql_data_seek ($result, 0);
-	// Fetch a row with the column labels
-	$x=mysql_fetch_assoc($result);
+
 	// Print the column labels
 	print "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" border=\"0\"><tr><span class=\"byline\">";
-	foreach (array_keys($x) as $k) {
-		print "<td><h3> $k </h3></td>";
-
-	}
-	print "</span></tr><tr>";
-	// Print the values for the first row
-	foreach ($x as $v) {
-	//while ($row = mysql_fetch_assoc($result)) {
-		print "<td width=\"80%\">$v</td>";
-		//print "<td width=\"18%\" align=\"right\">$v</td>";
-
-	}
-	print "</tr><tr>";
-	 //Print the rest of the rows.
-	while ($x=mysql_fetch_row($result)) {
-		foreach ($x as $v) {
-			print "<td width=\"80%\">$v</td>";
-		//print "<td width=\"82%\">$v</td>";
-		//print "<td width=\"18%\" align=\"right\">$v</td>";
-
+	for($i = 0; $i < mysql_num_fields($result); $i++) {
+    		$field_info = mysql_fetch_field($result, $i);
+		if ($field_info->name == 'ITEM') {
+    			print "<td width=\"80%\" align=\"left\"><h3>$field_info->name</h3></td>";
+		}elseif ($field_info->name == 'PRICE') {
+    			print "<td width=\"20%\" align=\"left\"><h3>$field_info->name</h3></td>";
 		}
-	print "</tr><tr>";
 	}
+	print "</tr><tr>";
+
+	while ($row=mysql_fetch_assoc($result)) {
+		// remember this row's category
+		$category = $row['CATEGORY'];
+		// compare it to the previous row's category
+		if ( $category != $category_old ) {							print"<td colspan= 2 width=\"100%\" align=\"left\"><h3>";
+			print($row['CATEGORY']);
+			print"</h3></td></tr>";
+			$category_old = $row['CATEGORY'];
+		}
+
+		print"<tr>";
+		print"<td width=\"70%\" align=\"left\">";
+		print($row['ITEM']);
+		print"</td>";
+		print"<td width=\"30%\" align=\"left\">";
+		print($row['PRICE']);
+		print"</td>";
+		print"<tr><td colspan= 2 width=\"100%\" align=\"left\"><font size=\"2\" color=\"green\">";
+		print($row['description']);
+		print"</font></td></tr>";
+		//}
+	}
+	print"</span></tr></table>";
+
 ?>
-</tr></table>
 
 
-<!--
- <span class="byline"><h3>Appetizers</h3></span>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-	<tr>
-		<td width="82%">Tempura</td>
-		<td width="18%" align="right">$10.49</td>
-	</tr>
-	<tr>
-		<td width="82%">Agedashi Tofr</td>
-		<td width="18%" align="right">$3.99</td>
-	</tr>
-	<tr>
-		<td width="82%">Miso Soup</td>
-		<td width="18%" align="right">$1.99</td>
-	</tr>
-
-</table>
-												
-
- <span class="byline"><h3>Sushi Roll</h3></span>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-	<tr>
-		<td width="82%">Dynamite Roll</td>
-		<td width="18%" align="right">$5.49</td>
-	</tr>
-	<tr>
-		<td width="82%">California Roll</td>
-		<td width="18%" align="right">$4.99</td>
-	</tr>
-	<tr>
-		<td width="82%">Sakura Roll</td>
-		<td width="18%" align="right">$5.99</td>
-	</tr>
-	<tr>
-		<td width="82%">Spider Roll</td>
-		<td width="18%" align="right">$5.99</td>
-	</tr>
-
-	<tr>
-		<td width="82%">Dragon Roll</td>
-		<td width="18%" align="right">$6.49</td>
-	</tr>
-	<tr>
-		<td width="82%">Yamacado Roll</td>
-		<td width="18%" align="right">$4.99</td>
-	</tr>
-
-	<tr>
-		<td width="82%">Imperial Roll</td>
-		<td width="18%" align="right">$5.99</td>
-	</tr>
-	<tr>
-		<td width="82%">Tokyo Roll</td>
-		<td width="18%" align="right">$6.99</td>
-	</tr>
-	<tr>
-		<td width="82%">B.C. Roll</td>
-		<td width="18%" align="right">$6.49</td>
-	</tr>
-	<tr>
-		<td width="82%">Inari</td>
-		<td width="18%" align="right">$1.49</td>
-	</tr>
-
-
-</table>
-
- <span class="byline"><h3>Donburi</h3></span>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-	<tr>
-		<td width="82%">Katsu Don</td>
-		<td width="18%" align="right">$9.99</td>
-	</tr>
-
-</table>
-
- <span class="byline"><h3>Special</h3></span>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-	<tr>
-		<td width="82%">House Specia</td>
-		<td width="18%" align="right">$7.49</td>
-	</tr>
-	<tr>
-		<td width="82%">Beef Teriyaki</td>
-		<td width="18%" align="right">$11.49</td>
-	</tr>
-
-</table>
-
- <span class="byline"><h3>Party Tray</h3></span>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-	<tr>
-		<td width="82%">Combination</td>
-		<td width="18%" align="right">$28.49</td>
-	</tr>
-	<tr>
-		<td width="82%">Platter A</td>
-		<td width="18%" align="right">$25.49</td>
-	</tr>
-
-</table>
-
-
--->
 
 									</article>
 
@@ -316,11 +229,11 @@ Monday and Friday get $1 off for party platter!!</span>
 		<!-- Footer Wrapper -->
 			<div id="footer-wrapper">
 				<footer id="footer" class="5grid-layout">
-					<div class="row">
+<!--					<div class="row">
 						<div class="3u">
 						
 							<!-- Links -->
-											<section>
+<!--											<section>
 												<header class="major">
 													<h2>SUSHI PALACE</h2>
 												</header>
@@ -335,9 +248,10 @@ Monday and Friday get $1 off for party platter!!</span>
 											</section>
 						
 						</div>
-						<div class="3u">
+						<div class="3u"> -->
 						
 							<!-- Links -->
+<!--
 								<section>
 									<h2>Menu</h2>
 									<ul class="style2">
@@ -350,11 +264,12 @@ Monday and Friday get $1 off for party platter!!</span>
 								</section>
 						
 						</div>
-						<div class="6u">
+						<div class="6u"> -->
 						
 							<!-- About -->
 
 							<!-- Contact -->
+<!--
 								<section>
 									<h2>Get in touch</h2>
 									<div class="5grid">
@@ -374,7 +289,7 @@ Monday and Friday get $1 off for party platter!!</span>
 								</section>
 						
 						</div>
-					</div>
+					</div> -->
 					<div class="row">
 						<div class="12u">
 							<div id="copyright">
