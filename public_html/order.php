@@ -1,17 +1,18 @@
 <?php
 
-session_start ();
+
 
 require ( "../credentials.php" );
+include_once ( "../session.php" );
 
-$LinkID = mysql_connect($req_server, $req_username, $req_password);
-if (!$LinkID) {
-	die('Could not connect: ' . mysql_error());
+$LinkID = mysql_connect ( $req_server, $req_username, $req_password );
+if ( !$LinkID ) {
+	die( 'Could not connect: ' . mysql_error ( ) );
 }
 
-$db_selected = mysql_select_db('sushiC199');
-if (!$db_selected) {
-    die('Could not select database: ' . mysql_error());
+$db_selected = mysql_select_db ( 'sushiC199' );
+if ( !$db_selected ) {
+    die( 'Could not select database: ' . mysql_error ( ) );
 }
 $query = mysql_query ( "
 	SELECT category, product_id, product_name AS 'Item', price AS 'Price'
@@ -127,10 +128,10 @@ $query = mysql_query ( "
 											<li><a href="http://www.floatingfishstore.com/">The Fish Store</a></li>
 											<li><a href="http://www.1fish2fish.ca/">1Fish2Fish</a></li>
 										</ul>
-										<p>
+										<p><span style="font-style: italic">
 										All our seafood is regionally sourced from OceanWise partners.<br>
 										We buy only organic ingredients for rice, vegetables, and condiments.<br>
-										
+										</span>
 										<footer>
 											<h4>MyPalace</h4>
 											
@@ -166,6 +167,7 @@ $query = mysql_query ( "
 											$category = "";
 											$category_old = "";
 											$labeled = false;
+											$price_align = false;
 											
 											
 											// Ex-Table Headers, Mayumi you may still need header code here
@@ -186,7 +188,7 @@ $query = mysql_query ( "
 														
 														if ( $category != $category_old ) {		// compare it to the previous row's category
 														
-															print "<td><h3> $category </h3></td></tr>";		// only if it's changed, print it on a row by itself
+															print "<td width = \"30%\"><h3> $category </h3></td></tr>";		// only if it's changed, print it on a row by itself
 														
 														}
 														
@@ -199,8 +201,13 @@ $query = mysql_query ( "
 															$labeled = true;	//  We've now handled the category and product_id.  
 													
 														} else {	// This else handles the remaining fields, product_name and price
-														
-															print "<td> $v </td>";
+															if ( $price_align == false ) {
+																print "<td width=\"30%\" align=\"left\"> $v </td>";
+																$price_align = true;
+															} else {
+																print "<td width=\"30%\" align=\"center\"> $v </td>";
+																$price_align = false;
+															}
 														}
 														
 													}	// end foreach 
@@ -208,7 +215,7 @@ $query = mysql_query ( "
 												}
 												
 												// each row needs a select quantity box
-												print "<td>
+												print "<td width=\"10%\" align=\"left\">
 													<select name=\"$row_label\">
 													<option value=\"0\" selected>&nbsp&nbsp&nbsp</option>
 													<option value=\"1\">1</option>
@@ -235,7 +242,7 @@ $query = mysql_query ( "
 											
 											
 											// Form Submit Button
-											print "<td><p><td></tr> <tr> <td></td> <td></td> <td><input type=\"submit\" class=\"button button-icon button-icon-rarrow\"></td></tr>";
+											print "<td><p><td></tr> <tr> <td></td> <td colspan=\"3\"><button type=\"submit\" class=\"button button-icon button-icon-rarrow\">Add To Order</button></td></tr>";
 											
 											print "</table><p>";
 											print "</form>";

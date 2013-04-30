@@ -79,13 +79,17 @@ INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "S
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "HOUSE SPECIAL",6.55,"Sushi Roll","Tuna, salmon, imitation crab, shrimp, cucumber, and tobiko caviar");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "SCALLOP ROLL",6.95,"Sushi Roll","Scallop, cucumber, spicy sauce, and tobiko caviar");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "NINJA ROLL", 6.55,"Sushi Roll","Tempura tuna, avocado, imitation crab, and sauce");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Tempura", 10.49 ,"Appetizers","Deep fried prawns, and assorted vegetables with our tempura sauce");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Prawn Tempura", 10.49 ,"Appetizers","Deep fried prawns, and assorted vegetables with our tempura sauce");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Beef Teriyaki", 11.49 ,"Entrees", "Served with steam rice, green salad. Beef is marinated and char broiled");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Katsu Don", 9.99 ,"Donburi","Deep fried pork cutlet, scrambled egg topping with our teriyaki sauce on rice");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Miso Soup", 1.99 ,"Appetizers","Famous Japanese bean paste soup with tofu seaweed and scallions");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Agedashi Tofu", 3.99 ,"Appetizers","Deep fried tofu served with bonito flakes, scallions, and delicious light soy sauce");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Platter A", 29.49,"Party Tray","California Roll - 16pcs, Salmon Roll - 24 pcs, Tuna Roll - 24pcs, Cucumber Roll - 14pcs, B.C.Roll - 6pcs");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Platter B", 33.99,"Party Tray","Nigiri: Tuna, Salmon, Prawn, Cooked egg, Eel, Toro, Tobiko Imitation crab - 2pcs each California Roll - 16pcs, Salmon Roll - 8pcs, Tuna Roll - 8pcs, BC Roll - 6pcs");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Gyoza", 6.45 ,"Appetizers","Deep fried Japanese dumpling with our dipping sauce");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Tempura Don", 8.99 ,"Donburi","Tempura prawns, vegetables on rice with our tempura sauce");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Oyako Don", 9.99 ,"Donburi","Grilled chicken, scrambled egg topping with our teriyaki sauce on rice");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Chicken Teriyaki", 11.49 ,"Entrees", "Grilled chicken served with steamed rice and green salad");
 
 /*** Customer Table Insert ***/
 
