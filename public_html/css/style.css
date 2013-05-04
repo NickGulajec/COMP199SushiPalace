@@ -102,11 +102,19 @@
 	{
 	}
 		form input,
-		form select,
+		
 		form textarea
 		{
 			-webkit-appearance: none;
 		}
+			
+					
+		form select {
+				-webkit-appearance: none;
+				height:2em;
+
+			}
+			
 			
 	br.clear
 	{

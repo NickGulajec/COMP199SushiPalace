@@ -124,34 +124,46 @@ if ( !$db_selected ) {
 										$_SESSION['ordered'] = $_POST;
 										$subtotal = null;
 									
+										print " <table><tr><td> Item: </td><td>Amount: &nbsp;</td><td>Price:</td></tr> ";
 										foreach ( $_SESSION['ordered'] as $key => $value) {
-											
+										
 											if ( $value > 0 ) {
 											
 												$table_result = mysql_query ( "SELECT product_name, price FROM PRODUCT_TBL WHERE product_id = $key" );
 												mysql_data_seek ( $table_result, 0 );
 												$row_result = mysql_fetch_row ( $table_result );
 												
-												$qty_pointer = false;
-												
+												print " <tr> ";
+												$price_displayed = false;
 												foreach ( $row_result as $foo ) {  // $row_result has 2 entries, 'product_name' and 'price'.
 													
-													print " $foo &nbsp; ";
-													
+													if ( $price_displayed == false ) {
+														print " <td> ";
+														print " $foo &nbsp; ";
+														print " </td><td> ";
+														print " $value &nbsp; ";
+														print " </td> ";
+														$price_displayed = true;
+													}
+
 												}
 												
 												$line_total = $foo * $value;  // this works because $foo is set to price when the foreach is exited
 												$subtotal += $line_total;
 												
-												print " $line_total ";
-												
-												print "<br>";
+												print " <td> ";
+												print " \$$line_total ";
+												print " </td></tr> ";
 																						
 											}
 
-										}
-
-										print " <p> $subtotal <p> ";
+										} // end of foreach
+										
+										print " <tr><td> ";
+										print " Total Cost: ";
+										print " </td><td></td><td> ";
+										print " \$$subtotal ";
+										print " </td></tr></table> ";
 										
 										print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
 										print "<a href=\"checkout.html\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";

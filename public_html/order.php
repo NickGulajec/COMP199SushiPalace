@@ -214,23 +214,48 @@ $query = mysql_query ( "
 													
 												}
 												
-												// each row needs a select quantity box
-												print "<td width=\"10%\" align=\"left\">
-													<select name=\"$row_label\">
-													<option value=\"0\" selected>&nbsp&nbsp&nbsp</option>
-													<option value=\"1\">1</option>
-													<option value=\"2\">2</option>
-													<option value=\"3\">3</option>
-													<option value=\"4\">4</option>
-													<option value=\"5\">5</option>
-													<option value=\"6\">6</option>
-													<option value=\"7\">7</option>
-													<option value=\"8\">8</option>
-													<option value=\"9\">9</option>
-													</select>
-													</td>";
-													
-												print "</tr><tr>";
+												$selected_qty = 0;
+												
+												if ( isset ( $_SESSION['ordered'][$row_label] ) ) {
+													if ( $_SESSION['ordered'][$row_label] > 0 ) {
+														$selected_qty = $_SESSION['ordered'][$row_label];
+													}
+												}
+												
+												if ( $selected_qty == 0 ) {
+													print "<td width=\"10%\" align=\"left\">
+														<select name=\"$row_label\">
+														<option value=\"0\" selected>&nbsp&nbsp&nbsp</option>
+														<option value=\"1\">1</option>
+														<option value=\"2\">2</option>
+														<option value=\"3\">3</option>
+														<option value=\"4\">4</option>
+														<option value=\"5\">5</option>
+														<option value=\"6\">6</option>
+														<option value=\"7\">7</option>
+														<option value=\"8\">8</option>
+														<option value=\"9\">9</option>
+														</select>
+														</td>";
+													print "</tr><tr>";
+												} else {
+													print "<td width=\"10%\" align=\"left\">
+														<select name=\"$row_label\">
+														<option value=\"$selected_qty\" selected>$selected_qty</option>
+														<option value=\"0\">&nbsp&nbsp&nbsp</option>
+														<option value=\"1\">1</option>
+														<option value=\"2\">2</option>
+														<option value=\"3\">3</option>
+														<option value=\"4\">4</option>
+														<option value=\"5\">5</option>
+														<option value=\"6\">6</option>
+														<option value=\"7\">7</option>
+														<option value=\"8\">8</option>
+														<option value=\"9\">9</option>
+														</select>
+														</td>";
+													print "</tr><tr>";
+												}
 											
 												// reset row states, get ready for the next row
 												$row_label = "";	
