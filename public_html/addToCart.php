@@ -32,6 +32,11 @@ if ( !$db_selected ) {
 		<script src="css/5grid/init.js?use=mobile,desktop,1000px&amp;mobileUI=1&amp;mobileUI.theme=none"></script>
 		<script src="js/jquery.dropotron-1.2.js"></script>
 		<script src="js/init.js"></script>
+		<script type="text/javascript" src="js/prototype.js"></script>
+		<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
+		<script type="text/javascript" src="js/controllers/cart/effective_cart_controller.js"></script>
+		<script type="text/javascript" src="js/models/cart/effective_cart.js"></script>
+		<script type="text/javascript" src="js/views/cart/effective_cart_view.js"></script>
 		<noscript>
 			<link rel="stylesheet" href="css/5grid/core.css" />
 			<link rel="stylesheet" href="css/5grid/core-desktop.css" />
@@ -123,26 +128,46 @@ if ( !$db_selected ) {
 										
 										$_SESSION['ordered'] = $_POST;
 										$subtotal = null;
-									
-										print " <table><tr><td> Item: </td><td>Amount: &nbsp;</td><td>Price:</td></tr> ";
+			
+print "<div id=\"items\">";
+print " <table><tr><td> Item: </td><td>Amount: &nbsp;</td><td>Price:</td></tr> ";
+											// the number of items
+	$cnt = 1;
 										foreach ( $_SESSION['ordered'] as $key => $value) {
 										
 											if ( $value > 0 ) {
-											
+
 												$table_result = mysql_query ( "SELECT product_name, price FROM PRODUCT_TBL WHERE product_id = $key" );
 												mysql_data_seek ( $table_result, 0 );
 												$row_result = mysql_fetch_row ( $table_result );
 												
 												print " <tr> ";
 												$price_displayed = false;
+
 												foreach ( $row_result as $foo ) {  // $row_result has 2 entries, 'product_name' and 'price'.
 													
 													if ( $price_displayed == false ) {
 														print " <td> ";
-														print " $foo &nbsp; ";
-														print " </td><td> ";
-														print " $value &nbsp; ";
-														print " </td> ";
+				print "<div class=\"item\" id=\"item$cnt\">";
+				print "<div class=\"name\" ><span id=\"name$cnt\">";														print " $foo &nbsp; ";
+				
+				print "</span></div>";
+														print " </td>";
+				print "<td> ";
+					
+				print "<div class=\"qty\"  ><select id=\"select$cnt\">";
+	
+			     for($i = 1; $i < 10; $i++) {
+			     echo "<option ";
+			        if ($value == $i) {
+			            echo " selected ";
+			        }
+			        echo " value=\".$i.\">";
+			        echo $i."</option>";
+			    }
+			    print "</select></div>";
+
+			    print " </td> ";
 														$price_displayed = true;
 													}
 
@@ -152,20 +177,45 @@ if ( !$db_selected ) {
 												$subtotal += $line_total;
 												
 												print " <td> ";
-												print " \$$line_total ";
-												print " </td></tr> ";
-																						
-											}
 
+		print "<div class=\"price\"><span id=\"price$cnt\">";
+												print " \$$line_total ";
+
+		print "</span></div>";
+												print " </td>";
+												print " <td> ";
+
+		print "<div class=\"del\"  ><button id=\"delete$cnt\">";
+		print " remove </button></div>";
+		$temp = "\"delete$cnt\"";
+		print "$temp";
+		print "</div> ";
+		print "</div> ";
+
+		print " </td> ";
+										
+		print " </tr> ";
+		
+	    // count items
+	    $cnt++;
+											}
 										} // end of foreach
 										
 										print " <tr><td> ";
-										print " Total Cost: ";
+
+print " <div id=\"total\"> Total Cost: ";
 										print " </td><td></td><td> ";
-										print " \$$subtotal ";
+										print " <span id=\"cost\">";
+
+print "\$$subtotal";
+
+print "</span> ";
+
+print "</div>";
 										print " </td></tr></table> ";
-										
-										print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
+
+print " </div>";
+																				print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
 										print "<a href=\"checkout.html\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";
 										
 									} else {
