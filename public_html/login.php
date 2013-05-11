@@ -1,39 +1,34 @@
 <?PHP
+
+// If there hasn't been anything sent from registation, ignore
+if ($_POST != null) {
 include_once ( "../session.php" );
 
 // Connect to the MySQL server.
 include '../credentials.php';
 
-$LinkID = mysql_connect($req_server, $req_username, $req_password);
+$LinkID = mysql_connect( $req_server, $req_username, $req_password );
 
 // Die if no connect
-if (!$LinkID) {
-	die('Could not connect: ' . mysql_error());
-}
+if ( !$LinkID )
+   {
+   echo "Failed to connect to MySQL: " . $LinkID;
+   }
+
 // Choose the DB and run a query.
-//mysql_select_db("comp170", $LinkID);
-mysql_select_db('sushiC199');
+$db_selected = mysql_select_db ( 'sushiC199' );
+if ( !$db_selected ) {
+    die( 'Could not select database: ' . mysql_error ( ) );
+	}
 
-/*
-// recieve values from registration.html
-$_POST['firstName'];
-$_POST['lastName']; 
-$_POST['address'];
-$_POST['phoneNo'];
+$sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no)
+ VALUES
+ ('$_POST[firstName]','$_POST[lastName]','$_POST[address]','$_POST[phoneNo]')";
 
-//the info is cleaned.
-$badfirstName = $_POST['firstName'];
-$badlastName = $_POST['lastName']; 
-$badaddress = $_POST['address'];
-$badphoneNo = $_POST['phoneNo'];
+// close the connection
+mysql_close($LinkID);
 
-$firstName = htmlspecialchars(strip_tags(trim($badfirstName)), ENT_QUOTES);
-$lastName = htmlspecialchars(strip_tags(trim($badlastName)), ENT_QUOTES);
-$address = htmlspecialchars(strip_tags(trim($badaddress)), ENT_QUOTES);
-$phoneNo = htmlspecialchars(strip_tags(trim($badphoneNo)), ENT_QUOTES);
-
- INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no)
-	VALUES ( $firstName, $lastName, $address, $phoneNo ); */
+}
 
 ?>
 <!DOCTYPE HTML>
