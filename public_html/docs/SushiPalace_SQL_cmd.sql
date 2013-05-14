@@ -12,10 +12,9 @@ CREATE TABLE ORDER_PRODUCT_TBL
   (order_id int(10) not null,
    product_id int(10) not null,
    quantity int(10),
-   payment_type bit(1)
-); /*** Removed primary key constraint "CONSTRAINT order_id_pk PRIMARY KEY (order_id)" because the PK is actually a 2-field key and couldn't insert into table properly ***/
-
-
+   payment_type bit(1),
+   CONSTRAINT order_id_pk PRIMARY KEY (order_id)
+);
 
 CREATE TABLE CUSTOMER_TBL 
   (customer_id int(10) not null AUTO_INCREMENT,
@@ -23,7 +22,6 @@ CREATE TABLE CUSTOMER_TBL
    last_name varchar(25),
    customer_address varchar(50),
    customer_phone_no varchar(25),
-   customer_email varchar(100),
    CONSTRAINT customer_id_pk PRIMARY KEY (customer_id)
 );
 
@@ -58,29 +56,29 @@ FOREIGN KEY(product_id) REFERENCES PRODUCT_TBL(product_id);
 
 
 /*** Menu Table Insert  ***/
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Kappa Maki",2.95,"Sushi Roll","Cucumber roll");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Oshinko Maki",3.75,"Sushi Roll","Japanese pickles roll");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Tekka Maki",3.95,"Sushi Roll","Tuna roll");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Sake Maki",3.95,"Sushi Roll","Salmon roll");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Negitoro",4.25,"Sushi Roll","Tuna & green onion");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Futo Maki",6.55,"Sushi Roll","Crab, egg, assorted vegetables in roll");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Sakura Roll",6.55,"Sushi Roll","Spicy mayo, salmon, avocado, tempura bit");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Rob's Roll",6.55,"Sushi Roll","Tempura prawn, yam & sauce in roll");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "California Roll",4.65,"Sushi Roll","Imitation crab, avocado, and sesame seed");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Avocado Roll",4.25,"Sushi Roll","Avocado, sesame seed");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Yam Roll",5.45,"Sushi Roll","Tempura yam & sauce in roll");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Vegetable Roll",4.95,"Sushi Roll","Lettuce, cucumber, pickle, shitake mushroom, avocado, sesame seed");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Yamakado Roll",5.95,"Sushi Roll","Yam and avocado");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Dynamite Roll",5.95,"Sushi Roll","Tempura prawn, cucumber & sauce");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Canadian Roll",5.95,"Sushi Roll","Smoked salmon, cucumber, onion");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Victoria Roll",6.55,"Sushi Roll","Tuna, salmon, shrimp, and tobiko caviar");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Vancouver Roll",5.95,"Sushi Roll","Imitation crab, shrimp, avocado");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "B.C. Roll",5.95,"Sushi Roll","BBQ skin salmon, scallop, imitation crab, cucumber");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Tokyo Roll",6.95,"Sushi Roll","BBQ eel, cucumber, sesames seed, and tobiko caviar");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Spider Roll",7.95,"Sushi Roll","Tempura soft shell crab, cucumber, lettuce, tobiko caviar, and sauce");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "House Special",6.55,"Sushi Roll","Tuna, salmon, imitation crab, shrimp, cucumber, and tobiko caviar");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Scallop Roll",6.95,"Sushi Roll","Scallop, cucumber, spicy sauce, and tobiko caviar");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Ninja Roll", 6.55,"Sushi Roll","Tempura tuna, avocado, imitation crab, and sauce");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "KAPPA MAKI",2.95,"Sushi Roll","Cucumber roll");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "OSHINKO MAKI",3.75,"Sushi Roll","Japanese pickles roll");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "TEKKA MAKI",3.95,"Sushi Roll","Tuna roll");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "SAKE MAKI",3.95,"Sushi Roll","Salmon roll");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "NEGITORO",4.25,"Sushi Roll","Tuna & green onion");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "FUTO MAKI",6.55,"Sushi Roll","Crab, egg, assorted vegetables in roll");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "SAKURA ROLL",6.55,"Sushi Roll","Spicy mayo, salmon, avocado, tempura bit");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "ROB'S ROLL",6.55,"Sushi Roll","Tempura prawn, yam & sauce in roll");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "CALIFORNIA ROLL",4.65,"Sushi Roll","Imitation crab, avocado, and sesame seed");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "AVOCADO ROLL",4.25,"Sushi Roll","Avocado, sesame seed");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "YAM ROLL",5.45,"Sushi Roll","Tempura yam & sauce in roll");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "VEGETABLE ROLL",4.95,"Sushi Roll","Lettuce, cucumber, pickle, shitake mushroom, avocado, sesame seed");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "YAMAKADO ROLL",5.95,"Sushi Roll","Yam and avocado");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "DYNAMITE ROLL",5.95,"Sushi Roll","Tempura prawn, cucumber & sauce");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "CANADIAN ROLL",5.95,"Sushi Roll","Smoked salmon, cucumber, onion");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "VICTORIA ROLL",6.55,"Sushi Roll","Tuna, salmon, shrimp, and tobiko caviar");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "VANCOUVER ROLL",5.95,"Sushi Roll","Imitation crab, shrimp, avocado");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "B.C. ROLL",5.95,"Sushi Roll","BBQ skin salmon, scallop, imitation crab, cucumber");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "TOKYO ROLL",6.95,"Sushi Roll","BBQ eel, cucumber, sesames seed, and tobiko caviar");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "SPIDER ROLL",7.95,"Sushi Roll","Tempura soft shell crab, cucumber, lettuce, tobiko caviar, and sauce");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "HOUSE SPECIAL",6.55,"Sushi Roll","Tuna, salmon, imitation crab, shrimp, cucumber, and tobiko caviar");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "SCALLOP ROLL",6.95,"Sushi Roll","Scallop, cucumber, spicy sauce, and tobiko caviar");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "NINJA ROLL", 6.55,"Sushi Roll","Tempura tuna, avocado, imitation crab, and sauce");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Prawn Tempura", 10.49 ,"Appetizers","Deep fried prawns, and assorted vegetables with our tempura sauce");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Beef Teriyaki", 11.49 ,"Entrees", "Served with steam rice, green salad. Beef is marinated and char broiled");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Katsu Don", 9.99 ,"Donburi","Deep fried pork cutlet, scrambled egg topping with our teriyaki sauce on rice");
@@ -108,11 +106,6 @@ INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phon
 INSERT INTO ORDER_TBL ( customer_id ) VALUES ( 1 );
 
 
-/*** ORDER_PRODUCT_TBL Insert (test data) ***/
-
-INSERT INTO ORDER_PRODUCT_TBL ( order_id, product_id, quantity ) VALUES ( 1, 1, 2 );
-INSERT INTO ORDER_PRODUCT_TBL ( order_id, product_id, quantity ) VALUES ( 1, 2, 1 );
-INSERT INTO ORDER_PRODUCT_TBL ( order_id, product_id, quantity ) VALUES ( 1, 3, 3 );
 
 /*** Clean Up Schema ***/
 

@@ -184,7 +184,7 @@ if (mysql_num_rows($result) == 0) {
 											print"<td width=\"70%\" align=\"left\">";
 											print($row['ITEM']);
 											print"</td>";
-											print"<td width=\"30%\" align=\"left\">";
+											print"<td width=\"30%\" align=\"left\">$";
 											print($row['PRICE']);
 											print"</td>";
 											print"<tr><td colspan= 2 width=\"100%\" align=\"left\"><font size=\"2\" color=\"green\">";

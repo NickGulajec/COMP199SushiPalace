@@ -15,7 +15,7 @@ if ( !$db_selected ) {
 
 ?>
 
-<!DOCTYPE HTML>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <!--
 	ZeroFour 1.0 by HTML5 Up!
 	html5up.net | @n33co
@@ -129,9 +129,17 @@ if ( !$db_selected ) {
 										$_SESSION['ordered'] = $_POST;
 										$subtotal = null;
 			
+
 print "<div id=\"items\">";
-print " <table><tr><td> Item: </td><td>Amount: &nbsp;</td><td>Price:</td></tr> ";
-											// the number of items
+print "<h1>My Cart</h1><br>";	 
+
+print "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" border=\"0\"><tr><span class=\"byline\">";
+print "<th width=\"30%\" align=\"left\">ITEM<h3></h3></th>";
+print "<th width=\"20%\" align=\"left\">AMOUNT<h3></h3></th>";
+print "<th width=\"50%\" align=\"left\">UNIT PRICE<h3></h3></th>";
+print "</span></tr></table>";
+			
+	// the number of items
 	$cnt = 1;
 										foreach ( $_SESSION['ordered'] as $key => $value) {
 										
@@ -141,20 +149,16 @@ print " <table><tr><td> Item: </td><td>Amount: &nbsp;</td><td>Price:</td></tr> "
 												mysql_data_seek ( $table_result, 0 );
 												$row_result = mysql_fetch_row ( $table_result );
 												
-												print " <tr> ";
-												$price_displayed = false;
+																						$price_displayed = false;
 
 												foreach ( $row_result as $foo ) {  // $row_result has 2 entries, 'product_name' and 'price'.
 													
 													if ( $price_displayed == false ) {
-														print " <td> ";
-				print "<div class=\"item\" id=\"item$cnt\">";
+														print "<div class=\"item\" id=\"item$cnt\">";
 				print "<div class=\"name\" ><span id=\"name$cnt\">";														print " $foo &nbsp; ";
 				
 				print "</span></div>";
-														print " </td>";
-				print "<td> ";
-					
+															
 				print "<div class=\"qty\"  ><select id=\"select$cnt\">";
 	
 			     for($i = 1; $i < 10; $i++) {
@@ -162,12 +166,11 @@ print " <table><tr><td> Item: </td><td>Amount: &nbsp;</td><td>Price:</td></tr> "
 			        if ($value == $i) {
 			            echo " selected ";
 			        }
-			        echo " value=\".$i.\">";
+			        echo " value=\"$i\">";
 			        echo $i."</option>";
 			    }
 			    print "</select></div>";
 
-			    print " </td> ";
 														$price_displayed = true;
 													}
 
@@ -176,45 +179,28 @@ print " <table><tr><td> Item: </td><td>Amount: &nbsp;</td><td>Price:</td></tr> "
 												$line_total = $foo * $value;  // this works because $foo is set to price when the foreach is exited
 												$subtotal += $line_total;
 												
-												print " <td> ";
-
-		print "<div class=\"price\"><span id=\"price$cnt\">";
-												print " \$$line_total ";
-
+										
+		print "<div class=\"price\">";
+		print "\$";
+		print "<span id=\"price$cnt\">";
+		print "$line_total";
 		print "</span></div>";
-												print " </td>";
-												print " <td> ";
-
+																				
 		print "<div class=\"del\"  ><button id=\"delete$cnt\">";
 		print " remove </button></div>";
-		$temp = "\"delete$cnt\"";
-		print "$temp";
 		print "</div> ";
-		print "</div> ";
-
-		print " </td> ";
-										
-		print " </tr> ";
 		
 	    // count items
 	    $cnt++;
 											}
 										} // end of foreach
-										
-										print " <tr><td> ";
-
-print " <div id=\"total\"> Total Cost: ";
-										print " </td><td></td><td> ";
-										print " <span id=\"cost\">";
-
-print "\$$subtotal";
-
+										print " </div>";
+print "<div id=\"total\">Total Cost: ";
+print "\$";
+print "<span id=\"cost\">$subtotal";
 print "</span> ";
-
 print "</div>";
-										print " </td></tr></table> ";
-
-print " </div>";
+										
 																				print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
 										print "<a href=\"checkout.html\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";
 										

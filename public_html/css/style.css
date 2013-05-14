@@ -101,20 +101,13 @@
 	form
 	{
 	}
+	
 		form input,
-		
+		form select,
 		form textarea
 		{
 			-webkit-appearance: none;
 		}
-			
-					
-		form select {
-				-webkit-appearance: none;
-				height:2em;
-
-			}
-			
 			
 	br.clear
 	{
@@ -603,7 +596,7 @@
 
 	#header-wrapper
 	{
-		background: url('../images/C789_unitoikuramaguro.jpg') top center;
+		background: url('../images/banner.jpg') top center;
 		background-size: 100%;
 	}
 	
@@ -780,3 +773,43 @@
 		{
 			color: #666;
 		}
+/*********************************************************************************/
+/* add by Mayumi                                                                */
+/*********************************************************************************/
+div#items{
+    margin: 5px 2px 1px 2px;
+    width: 400px;
+    border-collapse:collapse;
+}
+div.item {
+    height: 75px;
+}
+div.item div{
+    padding: 5px;
+    border-bottom:2px solid #fff;
+    background: #eeeeff;
+    float: left;
+    width: 50px;
+    height: 58px;
+    vertical-align: middle;
+}
+div.item div.name, div.item div.price, div.item div.qty, div.item div.del {
+    padding-top: 20px;
+    padding-left: 3px;
+    height: 43px;
+}
+div.item div.name {
+    width: 140px;
+}
+div.item div.price {
+    width: 60px;
+}
+#total{
+    margin-top:5px;
+    width: 400px;
+    text-align: center;
+}
+#total span{
+    color: #f06;
+    font-weight: bold;
+}
