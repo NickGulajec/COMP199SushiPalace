@@ -1,48 +1,21 @@
-<?PHP
-
+<?php 
 include_once ( "../session.php" );
-
-// If there hasn't been anything sent from registation, ignore
-if ($_POST != null) {
-
-
-// Connect to the MySQL server.
-include '../credentials.php';
-
-$LinkID = mysql_connect( $req_server, $req_username, $req_password );
-
-// Die if no connect
-if ( !$LinkID )
-   {
-   echo "Failed to connect to MySQL: " . $LinkID;
-   }
-
-// Choose the DB and run a query.
-$db_selected = mysql_select_db ( 'sushiC199' );
-if ( !$db_selected ) {
-    die( 'Could not select database: ' . mysql_error ( ) );
-	}
-
-$sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no)
- VALUES
- ('$_POST[firstName]','$_POST[lastName]','$_POST[address]','$_POST[phoneNo]')";
-
-// close the connection
-mysql_close($LinkID);
-}
-
-$returnPage = "";
+$_SESSION['returnPage'] = "index.php";
 $returnPage = $_SESSION['returnPage'];
 ?>
+
+
 <!DOCTYPE HTML>
 <!--
 	ZeroFour 1.0 by HTML5 Up!
 	html5up.net | @n33co
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+
+
 <html>
 	<head>
-		<title>Login - SUSHI PALACE!</title>
+		<title>Index - SUSHI PALACE!</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -64,7 +37,7 @@ $returnPage = $_SESSION['returnPage'];
 		<!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" /><![endif]-->
 	</head>
 	<body class="no-sidebar">
-	
+
 		<!-- Header Wrapper -->
 			<div id="header-wrapper">
 				<div class="5grid-layout">
@@ -81,11 +54,11 @@ $returnPage = $_SESSION['returnPage'];
 										<!-- Nav -->
 											<nav id="nav" class="mobileUI-site-nav">
 												<ul>
-													<li><a href="index.html">Home</a></li>
+													<li class="current_page_item"><a href="index.html">Home</a></li>
 													<li><a href="menu.html">Menu</a></li>
 													<li><a href="order.html">Order</a></li>
 													<li><a href="about.html">About</a></li>
-													<li class="current_page_item"><a href="login.html">Login</a></li> <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
+													<li><a href="login.html">Login</a></li> <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
 												</ul>
 											</nav>
 									
@@ -95,46 +68,41 @@ $returnPage = $_SESSION['returnPage'];
 					</div>
 				</div>
 			</div>
-			
+		
 		<!-- Main Wrapper -->
 			<div id="main-wrapper">
 				<div class="main-wrapper-style1">
 					<div class="inner">
-			
+				
 						<!-- Feature 1 -->
 							<section class="5grid-layout box-feature1">
 								<div class="row">
-									<div class="6u">
-										<section class="pad-right">
-											<header class="major">
-												<h2>Returning Customer</h2>
-											</header>
-											<p>Enter Address</p>
-											<form method="post" action="order.html">
-											<input name="address" type="text" value ="">
-											<footer>
-											<input value="Login" type="submit" class="button button-medium button-icon button-icon-rarrow">
-											</form>
-											</footer>
-										</section>
-									</div>
-									<div class="6u">
-										<section class="pad-left">
-											<header class="major">
-												<h2>Guest</h2>
-											</header>
-											<footer>
-												<a href="<?php echo $returnPage ?>" class="button button-medium button-icon button-icon-rarrow">Continue Shopping</a>
-												<a href="registration.html#" class="button button-medium button-alt button-icon button-icon-info">Register</a>
-											</footer>
-										</section>
+									<div class="12u">
+										<header class="first major">
+											<h2><strong>SUSHI PALACE:</strong> A place where you can<br />
+											order and buy sushi</h2>
+											<span class="byline">Click here to order</span>
+											<a href="order.html#" class="button button-big button-icon button-icon-check">Sushi</a>
+										</header>
 									</div>
 								</div>
+							</section>
+							<section class="5grid-layout box-feature1">
+							<div class="row">
+								<div class="12u">
+									<header class="major">
+										<h2>MyPalace</h2>
+										<span class="byline">Login to your account <?php echo $returnPage ?> </span>
+										<a href="login.html" class="button button-icon button-icon-info">Login</a>
+									</header>
+								</div>
+							</div>
+							</section>
 					</div>
 				</div>
 			</div>
-			
-			<!-- Footer Wrapper -->
+
+		<!-- Footer Wrapper -->
 			<div id="footer-wrapper">
 				<footer id="footer" class="5grid-layout">
 					<div class="row">
@@ -171,7 +139,6 @@ $returnPage = $_SESSION['returnPage'];
 					</div>
 				</footer>
 			</div>
-	
-	
+
 	</body>
 </html>

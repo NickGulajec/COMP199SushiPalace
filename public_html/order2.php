@@ -20,6 +20,8 @@ $query = mysql_query ( "
 	ORDER BY category, price
 " );
 
+$_SESSION['returnPage'] = "order2.php";
+
 ?>
 
 

@@ -32,6 +32,8 @@ if (mysql_num_rows($result) == 0) {
 	exit;
 }
 
+$_SESSION['returnPage'] = "menu.php";
+
 ?>
 <!DOCTYPE HTML>
 <!--

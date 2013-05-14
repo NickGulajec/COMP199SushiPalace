@@ -13,6 +13,7 @@ if ( !$db_selected ) {
     die( 'Could not select database: ' . mysql_error ( ) );
 }
 
+$_SESSION['returnPage'] = "addToCart.php";
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -126,7 +127,9 @@ if ( !$db_selected ) {
 									
 									if ( isset ( $_POST ) ) {
 										
+										
 										$_SESSION['ordered'] = $_POST;
+										
 										$subtotal = null;
 			
 

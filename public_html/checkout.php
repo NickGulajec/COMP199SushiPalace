@@ -22,6 +22,7 @@ $query = mysql_query ( "
 	ORDER BY category, price
 " );
 
+$_SESSION['returnPage'] = "checkout.php";
 ?>
 
 

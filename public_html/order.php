@@ -20,6 +20,7 @@ $query = mysql_query ( "
 	ORDER BY category, price
 " );
 
+$_SESSION['returnPage'] = "order.php";
 ?>
 
 
@@ -157,6 +158,8 @@ $query = mysql_query ( "
 										
 											print "<form method='post' action='addToCart.php'>";
 											print "<table><tr>";
+											
+											echo "<td> $returnPage </td></tr><tr>";
 											
 											mysql_data_seek ( $query, 0 );		//$query grabs rows of [category, product_id, product_name AS 'Item', price AS 'Price'] 
 											$fetched_row = "";
