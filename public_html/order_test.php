@@ -1,7 +1,5 @@
 <?php
 
-$PST_AS_DECIMAL = 0.07;
-$GST_AS_DECIMAL = 0.05;
 
 
 require ( "../credentials.php" );
@@ -22,8 +20,8 @@ $query = mysql_query ( "
 	ORDER BY category, price
 " );
 
-$_SESSION['returnPage'] = "checkout.php";
-
+$_SESSION['returnPage'] = "order.php";
+$returnPage = $_SESSION['returnPage'];
 ?>
 
 
@@ -42,71 +40,6 @@ $_SESSION['returnPage'] = "checkout.php";
 		<meta name="description" content="Order take-out or delivery from Sushi Palace" />
 		<meta name="keywords" content="Sushi Palace Order" />
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800" rel="stylesheet" type="text/css" />
-		
-		<!-- Displays guestDiv -->
-		<script>
-		function guestForm ( ) {
-			var xmlhttp;
-			if ( window.XMLHttpRequest ) {
-				// code for IE7+, Firefox, Chrome, Opera, Safari
-				xmlhttp=new XMLHttpRequest ( ) ;
-			} else {
-				// code for IE6, IE5
-				xmlhttp=new ActiveXObject ( "Microsoft.XMLHTTP" );
-			}
-			xmlhttp.onreadystatechange=function ( ) {
-				if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
-					document.getElementById( "guestDiv" ).innerHTML=xmlhttp.responseText;
-				}
-			}
-			xmlhttp.open( "GET","guestCheckout.php",true );
-			xmlhttp.send ( );
-		}
-		</script>
-		
-		<!-- Displays customerDiv -->
-		<script>
-		function customerForm ( ) {
-			var xmlhttp;
-			if ( window.XMLHttpRequest ) {
-				// code for IE7+, Firefox, Chrome, Opera, Safari
-				xmlhttp=new XMLHttpRequest ( ) ;
-			} else {
-				// code for IE6, IE5
-				xmlhttp=new ActiveXObject ( "Microsoft.XMLHTTP" );
-			}
-			xmlhttp.onreadystatechange=function ( ) {
-				if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
-					document.getElementById( "customerDiv" ).innerHTML=xmlhttp.responseText;
-				}
-			}
-			xmlhttp.open( "GET","loginCheckout.php",true );
-			xmlhttp.send ( );
-		}
-		</script>
-		
-		<!-- Displays paymentDiv -->
-		<script>
-		function paymentForm ( ) {
-			var xmlhttp;
-			if ( window.XMLHttpRequest ) {
-				// code for IE7+, Firefox, Chrome, Opera, Safari
-				xmlhttp=new XMLHttpRequest ( ) ;
-			} else {
-				// code for IE6, IE5
-				xmlhttp=new ActiveXObject ( "Microsoft.XMLHTTP" );
-			}
-			xmlhttp.onreadystatechange=function ( ) {
-				if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
-					document.getElementById( "paymentDiv" ).innerHTML=xmlhttp.responseText;
-				}
-			}
-			xmlhttp.open( "GET","payment.php",true );
-			xmlhttp.send ( );
-		}
-		</script>
-		
-		
 		
 		<script src="js/jquery-1.8.3.min.js"></script>
 		<script src="css/5grid/init.js?use=mobile,desktop,1000px&amp;mobileUI=1&amp;mobileUI.theme=none"></script>
@@ -217,77 +150,137 @@ $_SESSION['returnPage'] = "checkout.php";
 									<!-- Content -->
 									<article>
 										<header>
-											<center><h3>Your Order</h3></center>
+											<center><h3>Select Items to add to your order</h3></center>
 										</header>
 										
 										<?php
 										
-										$subtotal = null;
+										if ( $query ) {
 										
-										print " <table> ";
-
-										foreach ( $_SESSION['ordered'] as $key => $value) {
-
-											if ( $value > 0 ) {
+											print "<form method='post' action='addToCart_test..php'>";
+											print "<table><tr>";
 											
-												$table_result = mysql_query ( "SELECT product_name, price  FROM PRODUCT_TBL WHERE product_id = $key" );
-												mysql_data_seek ( $table_result, 0 );
-												$row_result = mysql_fetch_row ( $table_result );
-												
-												print " <tr> ";
-												$price_display = false;
-
-												foreach ( $row_result as $foo ) {  // $row_result has 2 entries, 'product_name' and 'price'.
+											echo "<td> $returnPage </td></tr><tr>";
+											
+											mysql_data_seek ( $query, 0 );		//$query grabs rows of [category, product_id, product_name AS 'Item', price AS 'Price'] 
+											$fetched_row = "";
+											
+											
+											// state variables for operating on current row
+											$row_label = "";		
+											$category = "";
+											$category_old = "";
+											$labeled = false;
+											$price_align = false;
+											
+											
+											// Ex-Table Headers, Mayumi you may still need header code here
+											
+											// ...
+											
+											
+											// Main Loop
+											while ( $fetched_row = mysql_fetch_row ( $query ) ) {	// Go through the query results one row at a time
+											
+												foreach ( $fetched_row as $v ) {	// Go through each value of the returned row in order.  
+																					// The values (in order) are: category, product_id, product_name, and price.
+																					// Their order is important to the foreach flow.
 													
-													if ( $price_display == false ) {
-														print " <td> ";
-														print " $foo &nbsp; ";
-														print " </td>";
-														$price_display = true;
-													} else {
-														print " <td> ";
-														print " \$$foo &nbsp;&nbsp;&nbsp; x ";
-														print " </td> ";
+													if ( $category == "" ) {		// every returned row has a category.  But we only want to display it the first time we see it
+													
+														$category = $v;				// remember this row's category
+														
+														if ( $category != $category_old ) {		// compare it to the previous row's category
+														
+															print "<td width = \"30%\"><h3> $category </h3></td></tr>";		// only if it's changed, print it on a row by itself
+														
+														}
+														
+													} else {	// $category is displayed, so we can now print the row
+													
+														if ( $labeled == false ) {		// select box for current row has not been labelled yet
+																						
+															print "<td></td>";		// maybe don't need this?? will test later..
+															$row_label = $v;		
+															$labeled = true;	//  We've now handled the category and product_id.  
+													
+														} else {	// This else handles the remaining fields, product_name and price
+															if ( $price_align == false ) {
+																print "<td width=\"30%\" align=\"left\"> $v </td>";
+																$price_align = true;
+															} else {
+																print "<td width=\"30%\" align=\"center\"> $v </td>";
+																$price_align = false;
+															}
+														}
+														
+													}	// end foreach 
+													
+												}
+												
+												$selected_qty = 0;
+												
+												if ( isset ( $_SESSION['ordered'][$row_label] ) ) {
+													if ( $_SESSION['ordered'][$row_label] > 0 ) {
+														$selected_qty = $_SESSION['ordered'][$row_label];
 													}
 												}
 												
-												print " <td> ";
-												print $value."&nbsp;&nbsp;&nbsp; = ";
-												print " </td> ";
+												if ( $selected_qty == 0 ) {
+													print "<td width=\"10%\" align=\"left\">
+														<select name=\"$row_label\">
+														<option value=\"0\" selected>&nbsp&nbsp&nbsp</option>
+														<option value=\"1\">1</option>
+														<option value=\"2\">2</option>
+														<option value=\"3\">3</option>
+														<option value=\"4\">4</option>
+														<option value=\"5\">5</option>
+														<option value=\"6\">6</option>
+														<option value=\"7\">7</option>
+														<option value=\"8\">8</option>
+														<option value=\"9\">9</option>
+														</select>
+														</td>";
+													print "</tr><tr>";
+												} else {
+													print "<td width=\"10%\" align=\"left\">
+														<select name=\"$row_label\">
+														<option value=\"$selected_qty\" selected>$selected_qty</option>
+														<option value=\"0\">&nbsp&nbsp&nbsp</option>
+														<option value=\"1\">1</option>
+														<option value=\"2\">2</option>
+														<option value=\"3\">3</option>
+														<option value=\"4\">4</option>
+														<option value=\"5\">5</option>
+														<option value=\"6\">6</option>
+														<option value=\"7\">7</option>
+														<option value=\"8\">8</option>
+														<option value=\"9\">9</option>
+														</select>
+														</td>";
+													print "</tr><tr>";
+												}
+											
+												// reset row states, get ready for the next row
+												$row_label = "";	
+												$category_old = $category;	
+												$category = "";
+												$labeled = false;
 												
-												$line_total = $foo * $value;  // this works because $foo is set to price when the foreach is exited
-												$subtotal += $line_total;
-												
-												print " <td> ";
-												print " \$$line_total ";
-												print " </td> ";
-												
-												print " </tr> ";
-											}
-										} // end of foreach
+											}  // end while (get next row of query until there are no more)
+											
+											
+											// Form Submit Button
+											print "<td><p><td></tr> <tr> <td></td> <td colspan=\"3\"><button type=\"submit\" class=\"button button-icon button-icon-rarrow\">Add To Order</button></td></tr>";
+											
+											print "</table><p>";
+											print "</form>";
+											
+										} else {	// ( !$query )
 										
-										print " <tr> <td> </td><td> </td><td> </td><td> ======= </td> </tr> ";
-										print " <tr> <td> </td><td> </td><td> Subtotal </td><td> \$$subtotal </td> </tr> ";
-										$pst = $PST_AS_DECIMAL * $subtotal;
-										print " <tr> <td> </td><td> </td><td> PST </td><td> $pst </td> </tr> ";
-										$gst = $GST_AS_DECIMAL * $subtotal;
-										print " <tr> <td> </td><td> </td><td> GST </td><td> $gst </td> </tr> ";
-										print " <tr> <td> </td><td> </td><td> </td><td> ======= </td> </tr> ";
-										$total = $subtotal + $gst + $pst;
-										print " <tr> <td> </td><td> </td><td> Total </td><td> $total </td> </tr> ";
-										
-										$_SESSION['totalPayment'] = $total;
-										
-										
-										print " </table> ";
-										?>
-										<button type="button" onclick="guestForm()">Purchase as a Guest</button>
-										<button type="button" onclick="customerForm()">Login to Purchase</button>
-										<div id="guestDiv"> </div>
-										<div id="customerDiv"> </div>
-										<div id="paymentDiv"> </div>
-										<?php
-										
+											print "<p>Database Error";
+											
+										}
 										
 										?>
 									</article>

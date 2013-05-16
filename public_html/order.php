@@ -21,6 +21,7 @@ $query = mysql_query ( "
 " );
 
 $_SESSION['returnPage'] = "order.php";
+$returnPage = $_SESSION['returnPage'];
 ?>
 
 

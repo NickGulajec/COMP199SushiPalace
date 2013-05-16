@@ -23,7 +23,6 @@ $query = mysql_query ( "
 " );
 
 $_SESSION['returnPage'] = "checkout.php";
-
 ?>
 
 
@@ -43,7 +42,6 @@ $_SESSION['returnPage'] = "checkout.php";
 		<meta name="keywords" content="Sushi Palace Order" />
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800" rel="stylesheet" type="text/css" />
 		
-		<!-- Displays guestDiv -->
 		<script>
 		function guestForm ( ) {
 			var xmlhttp;
@@ -59,54 +57,16 @@ $_SESSION['returnPage'] = "checkout.php";
 					document.getElementById( "guestDiv" ).innerHTML=xmlhttp.responseText;
 				}
 			}
-			xmlhttp.open( "GET","guestCheckout.php",true );
+			xmlhttp.open( "GET","guestCheckout_test.php",true );
 			xmlhttp.send ( );
 		}
 		</script>
 		
-		<!-- Displays customerDiv -->
-		<script>
+		<script type="text/javascript">
 		function customerForm ( ) {
-			var xmlhttp;
-			if ( window.XMLHttpRequest ) {
-				// code for IE7+, Firefox, Chrome, Opera, Safari
-				xmlhttp=new XMLHttpRequest ( ) ;
-			} else {
-				// code for IE6, IE5
-				xmlhttp=new ActiveXObject ( "Microsoft.XMLHTTP" );
-			}
-			xmlhttp.onreadystatechange=function ( ) {
-				if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
-					document.getElementById( "customerDiv" ).innerHTML=xmlhttp.responseText;
-				}
-			}
-			xmlhttp.open( "GET","loginCheckout.php",true );
-			xmlhttp.send ( );
+			window.location.href = "http://deepblue.cs.camosun.bc.ca/~comp19901/login.php"
 		}
 		</script>
-		
-		<!-- Displays paymentDiv -->
-		<script>
-		function paymentForm ( ) {
-			var xmlhttp;
-			if ( window.XMLHttpRequest ) {
-				// code for IE7+, Firefox, Chrome, Opera, Safari
-				xmlhttp=new XMLHttpRequest ( ) ;
-			} else {
-				// code for IE6, IE5
-				xmlhttp=new ActiveXObject ( "Microsoft.XMLHTTP" );
-			}
-			xmlhttp.onreadystatechange=function ( ) {
-				if ( xmlhttp.readyState==4 && xmlhttp.status==200 ) {
-					document.getElementById( "paymentDiv" ).innerHTML=xmlhttp.responseText;
-				}
-			}
-			xmlhttp.open( "GET","payment.php",true );
-			xmlhttp.send ( );
-		}
-		</script>
-		
-		
 		
 		<script src="js/jquery-1.8.3.min.js"></script>
 		<script src="css/5grid/init.js?use=mobile,desktop,1000px&amp;mobileUI=1&amp;mobileUI.theme=none"></script>
@@ -275,17 +235,24 @@ $_SESSION['returnPage'] = "checkout.php";
 										print " <tr> <td> </td><td> </td><td> </td><td> ======= </td> </tr> ";
 										$total = $subtotal + $gst + $pst;
 										print " <tr> <td> </td><td> </td><td> Total </td><td> $total </td> </tr> ";
-										
-										$_SESSION['totalPayment'] = $total;
+
+
+print "<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" target=\"_top\">";
+print "<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">";
+print "<input type=\"hidden\" name=\"hosted_button_id\" value=\"A2KRNHFRQY3LA\">";			
+print "<input type=\"hidden\" name=\"total\" value=$total>";			
 										
 										
 										print " </table> ";
+
+
+
+
 										?>
 										<button type="button" onclick="guestForm()">Purchase as a Guest</button>
 										<button type="button" onclick="customerForm()">Login to Purchase</button>
 										<div id="guestDiv"> </div>
-										<div id="customerDiv"> </div>
-										<div id="paymentDiv"> </div>
+										<div id="guestDiv"> </div>
 										<?php
 										
 										

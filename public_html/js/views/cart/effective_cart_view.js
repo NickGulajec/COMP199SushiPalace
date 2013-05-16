@@ -7,6 +7,8 @@ cart.EffectiveCartView = {
     // updateSum
     updateSum: function() {
         var sum = cart.EffectiveCart.getSum();
-        $("cost").innerHTML = sum;
+        $("cost").innerHTML = sum.toFixed(2);
+        var qty = cart.EffectiveCart.getQty();
+	$("qty").innerHTML  = qty;
     }
 }

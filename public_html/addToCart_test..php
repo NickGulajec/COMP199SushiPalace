@@ -129,9 +129,8 @@ if ( isset ( $_POST ) ) {
 										
 										
 										$_SESSION['ordered'] = $_POST;
-										//print_r($_SESSION['ordered']);
-
-$subtotal = null;
+										
+										$subtotal = null;
 			
 
 print "<div id=\"items\">";
@@ -155,40 +154,31 @@ print "</span></tr></table>";
 												
 																						$price_displayed = false;
 
-	print "$value";
 												foreach ( $row_result as $foo ) {  // $row_result has 2 entries, 'product_name' and 'price'.
-										
-											if ( $price_displayed == false ) {
+													
+													if ( $price_displayed == false ) {
 														print "<div class=\"item\" id=\"item$cnt\">";
 				print "<div class=\"name\" ><span id=\"name$cnt\">";														print " $foo &nbsp; ";
 				
 				print "</span></div>";
 															
 				print "<div class=\"qty\"  ><select id=\"select$cnt\">";
-print "<span id=\"qty\">$qty</span> ";
-
+	
 			     for($i = 1; $i < 10; $i++) {
-
 			     echo "<option ";
 			        if ($value == $i) {
 			            echo " selected ";
-
 			        }
 			        echo " value=\"$i\">";
 			        echo $i."</option>";
-
-
 			    }
-
 			    print "</select></div>";
 
-
-				$price_displayed = true;
+														$price_displayed = true;
 													}
 
 												}
-												//print "$foo<br>";
-		//print "$value";
+												
 												$line_total = $foo * $value;  // this works because $foo is set to price when the foreach is exited
 												$subtotal += $line_total;
 												
@@ -213,9 +203,9 @@ print "\$";
 print "<span id=\"cost\">$subtotal";
 print "</span> ";
 print "</div>";
-
+										
 																				print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
-										print "<a href=\"checkout.html\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";
+										print "<a href=\"checkout_test.php\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";
 
 
 

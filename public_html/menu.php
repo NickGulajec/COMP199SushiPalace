@@ -146,7 +146,7 @@ $_SESSION['returnPage'] = "menu.php";
 											<h2>MENU</h2>
 											<span class="byline">Monday and Friday get $1 off for party platter!!</span>
 										</header>
-										<span class="image image-full"><img src="images/C789_unitoikuramaguro.jpg" width="200" height="400" alt="" /></span>
+										<span class="image image-full"><img src="images/C789_unitoikuramaguro.png" width="200" height="400" alt="" /></span>
 										
 										<!-- Menu -->
 
