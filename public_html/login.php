@@ -5,6 +5,37 @@ include_once ( "../session.php" );
 // If there hasn't been anything sent from registation, ignore
 if ($_POST != null) {
 
+// Get info from regestration
+$_POST[firstName] = $firstName;
+$_POST[lastName] = $lastName;
+$_POST[address] = $address;
+$_POST[phoneNo] = $phoneNo;
+$_POST[email] = $email;
+$_POST[password] = $pass;
+
+// Clean it up
+$first = htmlspecialchars(strip_tags(trim($firstName)), ENT_QUOTES);
+$last = htmlspecialchars(strip_tags(trim($lastName)), ENT_QUOTES);
+$home = strip_tags(trim($address));
+$number = strip_tags(trim($phoneNo));
+$mail = strip_tags(trim($email));
+$pass = strip_tags(trim($password));
+
+$e = "^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$";
+$phone = "/^(\+\d)*\s*(\(\d{3}\)\s*)*\d{3}(-{0,1}|\s{0,1})\d{2}(-{0,1}|\s{0,1})\d{2}$/";
+
+$goodEmail = preg_match($e, $mail);
+$goodPhoneNumber = preg_match($phone, $number)
+
+if (!$goodEmail) {
+		echo "Error, input contains invalid words/characters.<br>";
+		exit ;
+	  }
+	  
+if (!$goodPhoneNumber) {
+		echo "Error, input contains invalid words/characters.<br>";
+		exit ;
+	  }
 
 // Connect to the MySQL server.
 include '../credentials.php';
@@ -23,11 +54,11 @@ if ( !$db_selected ) {
     die( 'Could not select database: ' . mysql_error ( ) );
 	}
 
-$sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no)
+$sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email, customer_password)
  VALUES
- ('$_POST[firstName]','$_POST[lastName]','$_POST[address]','$_POST[phoneNo]')";
+ ('$first','$last','$home','$goodPhoneNumber', '$goodEmail', '$pass')";
 
-// close the connection
+// Close the connection
 mysql_close($LinkID);
 }
 
@@ -109,9 +140,10 @@ $returnPage = $_SESSION['returnPage'];
 											<header class="major">
 												<h2>Returning Customer</h2>
 											</header>
-											<p>Enter Address</p>
-											<form method="post" action="order.html">
-											<input name="address" type="text" value ="">
+											<p>Enter Email and Password</p>
+											<form method="post" action="$returnPage">
+											E-mail:<input name="email" type="text" value ="">
+											Password:<input name="password" type="text" value = "">
 											<footer>
 											<input value="Login" type="submit" class="button button-medium button-icon button-icon-rarrow">
 											</form>

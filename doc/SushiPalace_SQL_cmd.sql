@@ -24,6 +24,7 @@ CREATE TABLE CUSTOMER_TBL
    customer_address varchar(50),
    customer_phone_no varchar(25),
    customer_email varchar(100),
+   customer_password varchar(25),
    CONSTRAINT customer_id_pk PRIMARY KEY (customer_id)
 );
 
