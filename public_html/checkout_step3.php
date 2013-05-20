@@ -2,7 +2,23 @@
 
 $_SESSION['returnPage'] = "checkout.php";
 
+require ( "../credentials.php" );
 include_once ( "../session.php" );
+
+$LinkID = mysql_connect ( $req_server, $req_username, $req_password );
+if ( !$LinkID ) {
+	die( 'Could not connect: ' . mysql_error ( ) );
+}
+
+$db_selected = mysql_select_db ( 'sushiC199' );
+if ( !$db_selected ) {
+    die( 'Could not select database: ' . mysql_error ( ) );
+}
+$query = mysql_query ( "
+	SELECT category, product_id, product_name AS 'Item', price AS 'Price'
+	FROM PRODUCT_TBL
+	ORDER BY category, price
+" );
 
 ?>
 
@@ -130,39 +146,62 @@ include_once ( "../session.php" );
 
 									<!-- Content -->
 									<article>
-										<form method="post" action="checkout_step2.php">
-											<table>
-												<tr>
-													<td colspan="2" align="center"> <h3> Your Order </h3> </td>
-												</tr>
-												<tr><td> &#160;</td></tr>
-												<tr>
-													<td> Choose a delivery method: </td>
-													<td>
-														<select name="deliveryType">
-															<option value="" selected> </option>
-															<option value="takeout"> Pick Up / Take Out </option>
-															<option value="delivery"> Deliver My Order! </option>
-														</select>
-													</td>
-												</tr>
-												<tr><td> &#160;</td></tr>
-												<tr>
-													<td>
-														<button type="submit" name="custType" value="guest" class="button button-icon button-icon-rarrow"> Checkout as Guest </button>
-													</td>
-													<td>
-														<button type="submit" name="custType" value="customerSignup" class="button button-icon button-icon-rarrow"> Sign Up to Checkout</button>
-													</td>
-												</tr>
-												<tr>
-													<td> &#160;</td>
-													<td>
-														<button type="submit" name="custType" value="customerLogin" class="button button-icon button-icon-rarrow"> Login to Checkout </button>
-													</td>
-												</tr>
-											</table>
-										</form>
+										<?php 
+
+										$_SESSION['checkoutType'] = $_POST['checkoutType'];
+
+										if ( $_SESSION['checkoutType'] == 'guest' ) {
+
+											$_SESSION['fname'] = $_POST['fname'];
+											$_SESSION['phonenum'] = $_POST['phonenum'];
+
+											if ( $_SESSION['deliveryType'] == 'delivery' ) {
+
+												$_SESSION['address'] = $_POST['address'];	
+
+											}
+
+											mysql_query("INSERT INTO ORDER_TBL (customer_id) VALUES ('0')");
+
+											$table_result = mysql_query ( "SELECT order_id AS 'id', order_date  AS 'date' FROM ORDER_TBL ORDER BY order_date DESC" );
+											mysql_data_seek ( $table_result, 0 );
+											$row_result = mysql_fetch_row ( $table_result );
+
+											$order_id = $row_result[0];
+											$order_date = $row_result[1];
+											echo "<br> Order Recieved at ".$order_date;
+											echo "<br> Thank You! <p> Your order number is: ".$order_id."<p>Please complete payment with PayPal, and we'll start making your sushi!<p>";
+
+											$total = $_SESSION['totalPayment'];
+											print "\$$total";
+
+											print "<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" target=\"_top\">";
+											print "<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">";
+											print "<input type=\"hidden\" name=\"hosted_button_id\" value=\"5U4WF3S6KSWM6\">";
+											print "<input type=\"hidden\" name=\"amount_1\" value=\"100\">";
+
+											print "<input type=\"image\"
+											src=\"https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif\" border=\"0\" name=\"submit\" alt=\"PayPal - The safer, easier way to pay online!\"><img alt=\"\" border=\"0\" src=\"https://www.paypalobjects.com/en_US/i/scr/pixel.gif\" width=\"1\" height=\"1\">";
+											print "</form>";
+
+
+										} elseif ( $_SESSION['checkoutType'] == 'customerSignup' ) {
+
+											print "TODO";
+
+										} elseif ( $_SESSION['checkoutType'] == 'customerReturning' ) {
+
+											print "TODO";
+
+										} else {
+
+											print "What Happened??";
+
+										}
+
+										
+										
+										?>
 										
 										
 										
@@ -190,4 +229,9 @@ include_once ( "../session.php" );
 
 	</body>
 </html>
+
+<?php
+
+
+?>
 

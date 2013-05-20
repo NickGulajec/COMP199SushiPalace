@@ -5,13 +5,23 @@ include_once ( "../session.php" );
 // If there hasn't been anything sent from registation, ignore
 if ($_POST != null) {
 
+// Connect to the MySQL server.
+include '../credentials.php';
+
 // Get info from regestration
-$_POST[firstName] = $firstName;
-$_POST[lastName] = $lastName;
-$_POST[address] = $address;
-$_POST[phoneNo] = $phoneNo;
-$_POST[email] = $email;
-$_POST[password] = $pass;
+$_POST['firstName'];
+$_POST['lastName'];
+$_POST['address'];
+$_POST['phoneNo'];
+$_POST['email'];
+$_POST['password'];
+
+$firstName = $_POST['firstName'];
+$lastName = $_POST['lastName'];
+$address = $_POST['address'];
+$phoneNo = $_POST['phoneNo'];
+$email = $_POST['email'];
+$password = $_POST['password'];
 
 // Clean it up
 $first = htmlspecialchars(strip_tags(trim($firstName)), ENT_QUOTES);
@@ -21,29 +31,62 @@ $number = strip_tags(trim($phoneNo));
 $mail = strip_tags(trim($email));
 $pass = strip_tags(trim($password));
 
-$e = "^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$";
-$phone = "/^(\+\d)*\s*(\(\d{3}\)\s*)*\d{3}(-{0,1}|\s{0,1})\d{2}(-{0,1}|\s{0,1})\d{2}$/";
+if (!$first) {
+		echo "Error, please fill out all the areas.<br>";
+		exit ;
+	  }
+	  echo $first;
+	  
+if (!$last) {
+		echo "Error, please fill out all the areas.<br>";
+		exit ;
+	  }
+	  echo $last;
 
-$goodEmail = preg_match($e, $mail);
-$goodPhoneNumber = preg_match($phone, $number)
+if (!$home) {
+		echo "Error, please fill out all the areas.<br>";
+		exit ;
+	  }
+	  echo $home;
+	  
+if (!$number) {
+		echo "Error, please fill out all the areas.<br>";
+		exit ;
+	  }
+	  echo $number;
+
+if (!$mail) {
+		echo "Error, please fill out all the areas.<br>";
+		exit ;
+	  }
+	  echo $mail;
+	  
+if (!$pass) {
+		echo "Error, please fill out all the areas.<br>";
+		exit ;
+	  }
+	  echo $pass;
+	  
+$e = '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$';
+$phone = '^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$';
+
+preg_match('`'.$e.'`', $mail, $goodEmail);
+preg_match('`'.$phone.'`', $number, $goodPhoneNumber);
 
 if (!$goodEmail) {
-		echo "Error, input contains invalid words/characters.<br>";
+		echo "Error, please enter a proper email address.<br>";
 		exit ;
 	  }
 	  
 if (!$goodPhoneNumber) {
-		echo "Error, input contains invalid words/characters.<br>";
+		echo "Error, phone number contains invalid words/characters.<br>";
 		exit ;
 	  }
-
-// Connect to the MySQL server.
-include '../credentials.php';
 
 $LinkID = mysql_connect( $req_server, $req_username, $req_password );
 
 // Die if no connect
-if ( !$LinkID )
+if (!$LinkID)
    {
    echo "Failed to connect to MySQL: " . $LinkID;
    }
@@ -56,7 +99,9 @@ if ( !$db_selected ) {
 
 $sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email, customer_password)
  VALUES
- ('$first','$last','$home','$goodPhoneNumber', '$goodEmail', '$pass')";
+ ('$first','$last','$home','$number', '$mail', '$pass')";
+ 
+ echo $sql;
 
 // Close the connection
 mysql_close($LinkID);
@@ -141,7 +186,7 @@ $returnPage = $_SESSION['returnPage'];
 												<h2>Returning Customer</h2>
 											</header>
 											<p>Enter Email and Password</p>
-											<form method="post" action="$returnPage">
+											<form method="post" action="<?php echo $returnPage ?>">
 											E-mail:<input name="email" type="text" value ="">
 											Password:<input name="password" type="text" value = "">
 											<footer>

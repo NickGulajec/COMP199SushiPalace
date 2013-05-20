@@ -38,6 +38,7 @@ $_SESSION['returnPage'] = "addToCart.php";
 		<script type="text/javascript" src="js/controllers/cart/effective_cart_controller.js"></script>
 		<script type="text/javascript" src="js/models/cart/effective_cart.js"></script>
 		<script type="text/javascript" src="js/views/cart/effective_cart_view.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 		<noscript>
 			<link rel="stylesheet" href="css/5grid/core.css" />
 			<link rel="stylesheet" href="css/5grid/core-desktop.css" />
@@ -155,8 +156,16 @@ print "</span></tr></table>";
 												
 																						$price_displayed = false;
 
-	print "$value";
-												foreach ( $row_result as $foo ) {  // $row_result has 2 entries, 'product_name' and 'price'.
+//print "<span id=\"changeQty\">$value</span><br> ";
+//print "<div id=\"jquery-sample\">";
+//print "    <p>";
+//print "        <span id=\"jquery-sample-textStatus\"></span>";
+//print "    </p>";
+//print "  <div id=\"jquery-sample-ajax\"></div>";
+//print "</div>";
+if (isset($_POST['check'])) {
+	print "Hi";
+}												foreach ( $row_result as $foo ) {  // $row_result has 2 entries, 'product_name' and 'price'.
 										
 											if ( $price_displayed == false ) {
 														print "<div class=\"item\" id=\"item$cnt\">";
@@ -165,7 +174,7 @@ print "</span></tr></table>";
 				print "</span></div>";
 															
 				print "<div class=\"qty\"  ><select id=\"select$cnt\">";
-print "<span id=\"qty\">$qty</span> ";
+//print "<span id=\"qty\">$qty</span> ";
 
 			     for($i = 1; $i < 10; $i++) {
 
@@ -190,13 +199,14 @@ print "<span id=\"qty\">$qty</span> ";
 												//print "$foo<br>";
 		//print "$value";
 												$line_total = $foo * $value;  // this works because $foo is set to price when the foreach is exited
+		
 												$subtotal += $line_total;
-												
-										
+																				$_SESSION['ordered'][$key]  = $value; 
+
 		print "<div class=\"price\">";
 		print "\$";
 		print "<span id=\"price$cnt\">";
-		print "$line_total";
+		print "$foo";
 		print "</span></div>";
 																				
 		print "<div class=\"del\"  ><button id=\"delete$cnt\">";
@@ -221,7 +231,7 @@ print "</div>";
 
 
 
-										//$_SESSION['ordered'] =
+										
 									} else {
 									
 										print ("Cart is empty");

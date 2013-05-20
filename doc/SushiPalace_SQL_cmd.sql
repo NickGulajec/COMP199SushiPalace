@@ -13,9 +13,8 @@ CREATE TABLE ORDER_PRODUCT_TBL
    product_id int(10) not null,
    quantity int(10),
    payment_type bit(1)
-); /*** Removed primary key constraint "CONSTRAINT order_id_pk PRIMARY KEY (order_id)" because the PK is actually a 2-field key and couldn't insert into table properly ***/
-
-
+);
+/*** Removed primary key constraint "CONSTRAINT order_id_pk PRIMARY KEY (order_id)" because the PK is actually a 2-field key and couldn't insert into table properly ***/
 
 CREATE TABLE CUSTOMER_TBL 
   (customer_id int(10) not null AUTO_INCREMENT,
@@ -96,12 +95,12 @@ INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "C
 
 /*** Customer Table Insert ***/
 
-INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no)
-	VALUES ( "Mayumi", "Connor", "111 Main St.", 123 );
-INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no)
-	VALUES ( "Ian", "Fulton", "456 Second St.", 456 );
-INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no)
-	VALUES ( "Nick", "Gulajec", "789 Third St.", 789 );
+INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email, customer_password)
+	VALUES ( "Mayumi", "Connor", "111 Main St.", 123, "mayumi.connor@gmail.com", "testpass");
+INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email, customer_password)
+	VALUES ( "Ian", "Fulton", "456 Second St.", 456, "iamdavideogamer999@hotmail.com", "testpass");
+INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email, customer_password)
+	VALUES ( "Nick", "Gulajec", "789 Third St.", 789, "nickg66@gmail.com", "testpass");
 
 	
 /*** Order Table Insert (test only, normally submitted via web, test values only)  ***/

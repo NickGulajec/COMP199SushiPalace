@@ -1,4 +1,6 @@
+
 var cart = new Object();
+
 
 cart.EffectiveCartController = Class.create({
     initialize: function() {
