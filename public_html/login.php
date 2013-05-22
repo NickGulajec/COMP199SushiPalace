@@ -14,14 +14,12 @@ $_POST['lastName'];
 $_POST['address'];
 $_POST['phoneNo'];
 $_POST['email'];
-$_POST['password'];
 
 $firstName = $_POST['firstName'];
 $lastName = $_POST['lastName'];
 $address = $_POST['address'];
 $phoneNo = $_POST['phoneNo'];
 $email = $_POST['email'];
-$password = $_POST['password'];
 
 // Clean it up
 $first = htmlspecialchars(strip_tags(trim($firstName)), ENT_QUOTES);
@@ -29,43 +27,36 @@ $last = htmlspecialchars(strip_tags(trim($lastName)), ENT_QUOTES);
 $home = strip_tags(trim($address));
 $number = strip_tags(trim($phoneNo));
 $mail = strip_tags(trim($email));
-$pass = strip_tags(trim($password));
 
 if (!$first) {
 		echo "Error, please fill out all the areas.<br>";
 		exit ;
 	  }
-	  echo $first;
+	  //echo $first;
 	  
 if (!$last) {
 		echo "Error, please fill out all the areas.<br>";
 		exit ;
 	  }
-	  echo $last;
+	  //echo $last;
 
 if (!$home) {
 		echo "Error, please fill out all the areas.<br>";
 		exit ;
 	  }
-	  echo $home;
+	  //echo $home;
 	  
 if (!$number) {
 		echo "Error, please fill out all the areas.<br>";
 		exit ;
 	  }
-	  echo $number;
+	  //echo $number;
 
 if (!$mail) {
 		echo "Error, please fill out all the areas.<br>";
 		exit ;
 	  }
-	  echo $mail;
-	  
-if (!$pass) {
-		echo "Error, please fill out all the areas.<br>";
-		exit ;
-	  }
-	  echo $pass;
+	  //echo $mail;
 	  
 $e = '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$';
 $phone = '^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$';
@@ -97,11 +88,11 @@ if ( !$db_selected ) {
     die( 'Could not select database: ' . mysql_error ( ) );
 	}
 
-$sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email, customer_password)
+$sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email)
  VALUES
- ('$first','$last','$home','$number', '$mail', '$pass')";
+ ('$first','$last','$home','$number','$mail')";
  
- echo $sql;
+ //echo $sql;
 
 // Close the connection
 mysql_close($LinkID);
@@ -185,10 +176,9 @@ $returnPage = $_SESSION['returnPage'];
 											<header class="major">
 												<h2>Returning Customer</h2>
 											</header>
-											<p>Enter Email and Password</p>
+											<p>Enter Email</p>
 											<form method="post" action="<?php echo $returnPage ?>">
 											E-mail:<input name="email" type="text" value ="">
-											Password:<input name="password" type="text" value = "">
 											<footer>
 											<input value="Login" type="submit" class="button button-medium button-icon button-icon-rarrow">
 											</form>
