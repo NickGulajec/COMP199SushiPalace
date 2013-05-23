@@ -91,9 +91,15 @@ if ( !$db_selected ) {
 $sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email)
  VALUES
  ('$first','$last','$home','$number','$mail')";
- 
  //echo $sql;
-
+ 
+ $retval = mysql_query($sql,$LinkID);
+ if (!$retval)
+   {
+   die('Could not enter data: ' . mysql_error());
+   }
+//echo "Entered data successfully\n";
+   
 // Close the connection
 mysql_close($LinkID);
 }
