@@ -173,17 +173,29 @@ $query = mysql_query ( "
 											echo "<br> Thank You! <p> Your order number is: ".$order_id."<p>Please complete payment with PayPal, and we'll start making your sushi!<p>";
 
 											$total = $_SESSION['totalPayment'];
-											print "\$$total";
+											$formattedTotal = number_format($total, 2, '.', '');
+											print "\$$formattedTotal";
+											?>
+											
+											<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+												<input type="hidden" name="cmd" value="_xclick">
+												<input type="hidden" name="business" value="N4GM7D5GGTBQQ">
+												<input type="hidden" name="lc" value="US">
+												<input type="hidden" name="amount" value="<?php echo $formattedTotal; ?>">
+												<input type="hidden" name="item_name" value="SushiPalace Order">
+												<input type="hidden" name="button_subtype" value="services">
+												<input type="hidden" name="no_note" value="1">
+												<input type="hidden" name="no_shipping" value="1">
+												<input type="hidden" name="rm" value="1">
+												<input type="hidden" name="return" value="http://deepblue.cs.camosun.bc.ca/~comp19901/success.php">
+												<input type="hidden" name="cancel_return" value="http://deepblue.cs.camosun.bc.ca/~comp19901/">
+												<input type="hidden" name="currency_code" value="USD">
+												<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+												<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+												<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+											</form>
 
-											print "<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" target=\"_top\">";
-											print "<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">";
-											print "<input type=\"hidden\" name=\"hosted_button_id\" value=\"5U4WF3S6KSWM6\">";
-											print "<input type=\"hidden\" name=\"amount_1\" value=\"100\">";
-
-											print "<input type=\"image\"
-											src=\"https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif\" border=\"0\" name=\"submit\" alt=\"PayPal - The safer, easier way to pay online!\"><img alt=\"\" border=\"0\" src=\"https://www.paypalobjects.com/en_US/i/scr/pixel.gif\" width=\"1\" height=\"1\">";
-											print "</form>";
-
+											<?php
 
 										} elseif ( $_SESSION['checkoutType'] == 'customerSignup' ) {
 

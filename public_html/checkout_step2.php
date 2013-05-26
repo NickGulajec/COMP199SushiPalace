@@ -220,36 +220,44 @@ function receiptDisplay() {
 					print " </td>";
 					$price_display = true;
 				} else {
+					$price = number_format($foo, 2, '.', '');
 					print " <td> ";
-					print " \$$foo &nbsp;&nbsp;&nbsp; x ";
+					print " \$$price &nbsp;&nbsp;&nbsp; x ";
 					print " </td> ";
 				}
 			}
 			print " <td> ";
 			print $value."&nbsp;&nbsp;&nbsp; = ";
 			print " </td> ";
-			$line_total = $foo * $value;  // this works because $foo is set to price when the foreach is exited
+			$line_total = $price * $value;
+			$line_total = number_format($line_total, 2, '.', '');
 			$subtotal += $line_total;
 			print " <td> \$$line_total </td>";
 			print " </tr> ";
 		}
 	} // end of foreach
+	
+	$subtotal = number_format($subtotal, 2, '.', '');
 	print " <tr> <td> </td><td> </td><td> </td><td> ======= </td> </tr> ";
 	print " <tr> <td> </td><td> </td><td> Subtotal </td><td> \$$subtotal </td> </tr> ";
 	if ( $_SESSION['deliveryType'] == 'takeout' ) {
 		$pst = 0.00;
-		print " <tr> <td> </td><td> </td><td> PST </td><td> $pst </td> </tr> ";
+		$pst = number_format($pst, 2, '.', '');
+		print " <tr> <td> </td><td> </td><td> PST </td><td> \$$pst </td> </tr> ";
 	} elseif ( $_SESSION['deliveryType'] == 'delivery' ) {
 		$pst = $PST_AS_DECIMAL * $subtotal;
-		print " <tr> <td> </td><td> </td><td> PST </td><td> $pst </td> </tr> ";
+		$pst = number_format($pst, 2, '.', '');
+		print " <tr> <td> </td><td> </td><td> PST </td><td> \$$pst </td> </tr> ";
 	} else {
 		print " <tr> <td> </td><td> </td><td> WTF </td><td> what did you break? </td> </tr> ";
 	}
 	$gst = $GST_AS_DECIMAL * $subtotal;
-	print " <tr> <td> </td><td> </td><td> GST </td><td> $gst </td> </tr> ";
+	$gst = number_format($gst, 2, '.', '');
+	print " <tr> <td> </td><td> </td><td> GST </td><td> \$$gst </td> </tr> ";
 	print " <tr> <td> </td><td> </td><td> </td><td> ======= </td> </tr> ";
 	$total = $subtotal + $gst + $pst;
-	print " <tr> <td> </td><td> </td><td> Total </td><td> $total </td> </tr> ";
+	$total = number_format($total, 2, '.', '');
+	print " <tr> <td> </td><td> </td><td> Total </td><td> \$$total </td> </tr> ";
 	$_SESSION['totalPayment'] = $total;
 	print " </table> ";
 }
@@ -278,7 +286,7 @@ function customerSignupCheckout() {
 
 function customerLoginCheckout() {
 	print "<table align='center'> <form method='post' action='checkout_step3.php'>";
-	print "<tr> <td colspan='2'> <button type='submit' name='checkoutType' value='customerReturning' class='button button-icon button-icon-rarrow'> Login to Checkout</button></td></tr>";
+	print "<tr> <td colspan='2'> <button type='submit' name='checkoutType' value='customerReturning' class='button button-icon button-icon-rarrow'> Nicks' Testing </button></td></tr>";
 	print "</form> </table>";
 }
 ?>
