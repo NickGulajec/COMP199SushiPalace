@@ -120,7 +120,7 @@ include_once ( "../session.php" );
 											
 											<p>Login to your account</p>
 											
-											<a href="login.html" class="button button-icon button-icon-info">Login</a>
+											<a href="nicks_testing.php" class="button button-icon button-icon-info">Testing Auto-Login</a>
 										</footer>
 									</section>
 								</div>
@@ -137,7 +137,7 @@ include_once ( "../session.php" );
 												</tr>
 												<tr><td> &#160;</td></tr>
 												<tr>
-													<td> Choose a delivery method: </td>
+													<td align="right"> Choose a delivery method: </td>
 													<td>
 														<select name="deliveryType">
 															<option value="" selected> </option>
@@ -147,6 +147,19 @@ include_once ( "../session.php" );
 													</td>
 												</tr>
 												<tr><td> &#160;</td></tr>
+												<?php
+												if (isset($_SESSION['loggedInID'])) {
+												?>
+												<tr>
+													<td> &#160;</td>
+													<td>
+														<button type="submit" name="custType" value="loggedIn" class="button button-icon button-icon-rarrow"> Signed-in Checkout </button>
+													</td>
+												</tr>
+												
+												<?php
+												} else {
+												?>
 												<tr>
 													<td>
 														<button type="submit" name="custType" value="guest" class="button button-icon button-icon-rarrow"> Checkout as Guest </button>
@@ -161,6 +174,9 @@ include_once ( "../session.php" );
 														<button type="submit" name="custType" value="customerLogin" class="button button-icon button-icon-rarrow"> Login to Checkout </button>
 													</td>
 												</tr>
+												<?php
+												}
+												?>
 											</table>
 										</form>
 										

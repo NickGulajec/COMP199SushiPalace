@@ -146,36 +146,68 @@ $query = mysql_query ( "
 
 									<!-- Content -->
 									<article>
-										<?php 
+										<?php
 
 										$_SESSION['checkoutType'] = $_POST['checkoutType'];
 
 										if ( $_SESSION['checkoutType'] == 'guest' ) {
-
-											$_SESSION['fname'] = $_POST['fname'];
-											$_SESSION['phonenum'] = $_POST['phonenum'];
-
-											if ( $_SESSION['deliveryType'] == 'delivery' ) {
-
-												$_SESSION['address'] = $_POST['address'];	
-
+										
+											$first = htmlspecialchars(strip_tags(trim($_POST['fname'])), ENT_QUOTES);
+											$phonenum = htmlspecialchars(strip_tags(trim($_POST['phonenum'])), ENT_QUOTES);
+											
+											if ( $first) {
+												$_SESSION['fname'] = $first;
+												if ( $phonenum ) {
+													$_SESSION['phonenum'] = $phonenum;
+												} else {
+													print "Not a valid phone number <p>";
+													print "<a href='checkout_step2.php'>Go Back</a>";
+													exit (" ");
+												}
+											} else {
+												print "No first name <p>";
+												print "<a href='checkout_step2.php'>Go Back</a>";
+												exit (" ");
 											}
-
-											mysql_query("INSERT INTO ORDER_TBL (customer_id) VALUES ('0')");
-
+											
+											if ( $_SESSION['deliveryType'] == 'delivery' ) {
+											
+												$address = htmlspecialchars(strip_tags(trim($_POST['address'])), ENT_QUOTES);
+												
+												if ( $address ) {
+													$_SESSION['address'] = $address;
+												} else {
+													print "Address required for delivery <p>";
+													print "<a href='checkout_step2.php'>Go Back</a>";
+													exit (" ");
+												}
+												
+											}
+											
+											mysql_query ( "INSERT INTO ORDER_TBL (customer_id) VALUES ('0')" );  // guest has customer_id of zero
 											$table_result = mysql_query ( "SELECT order_id AS 'id', order_date  AS 'date' FROM ORDER_TBL ORDER BY order_date DESC" );
 											mysql_data_seek ( $table_result, 0 );
 											$row_result = mysql_fetch_row ( $table_result );
-
 											$order_id = $row_result[0];
 											$order_date = $row_result[1];
+											
+											foreach ( $_SESSION['ordered'] as $key => $value ) {
+												if ( $value > 0 ) {
+													mysql_query ( "INSERT INTO ORDER_PRODUCT_TBL (order_id, product_id, quantity) VALUES ('$order_id', '$key', '$value')" )
+													or die("DB error");
+													echo $key." ".$value."<br>";
+												}
+											}
+											
+
+											
 											echo "<br> Order Recieved at ".$order_date;
 											echo "<br> Thank You! <p> Your order number is: ".$order_id."<p>Please complete payment with PayPal, and we'll start making your sushi!<p>";
 
 											$total = $_SESSION['totalPayment'];
 											$formattedTotal = number_format($total, 2, '.', '');
 											print "\$$formattedTotal";
-											?>
+										?>
 											
 											<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 												<input type="hidden" name="cmd" value="_xclick">
@@ -195,24 +227,25 @@ $query = mysql_query ( "
 												<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 											</form>
 
-											<?php
+										<?php
 
 										} elseif ( $_SESSION['checkoutType'] == 'customerSignup' ) {
 
-											print "TODO";
+											print "TODO:  customerSignup";
 
 										} elseif ( $_SESSION['checkoutType'] == 'customerReturning' ) {
 
-											print "TODO";
+											print "TODO:  customerReturning";
+											
+										} elseif ( $_SESSION['checkoutType'] == 'loggedIn' ) {
+											
+											print "TODO:  loggedIn";
 
 										} else {
 
 											print "What Happened??";
 
 										}
-
-										
-										
 										?>
 										
 										

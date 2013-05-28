@@ -148,19 +148,26 @@ $query = mysql_query ( "
 									<article>
 										<?php 
 										
-										$_SESSION['deliveryType'] = $_POST['deliveryType'];
-										$_SESSION['custType'] = $_POST['custType'];
+										if ( isset ( $_POST['deliveryType'] ) ) {
+											$_SESSION['deliveryType'] = $_POST['deliveryType'];
+										}
+										if ( isset ( $_POST['custType'] ) ) {
+											$_SESSION['custType'] = $_POST['custType'];
+										}
 										
 										if ( $_SESSION['deliveryType'] == 'takeout' || $_SESSION['deliveryType'] == 'delivery' ) {
-											if ( $_POST['custType'] == 'guest' ) {
+											if ( $_SESSION['custType'] == 'guest' ) {
 												receiptDisplay();
 												guestCheckout();
-											} elseif ( $_POST['custType'] == 'customerSignup' ) {
+											} elseif ( $_SESSION['custType'] == 'customerSignup' ) {
 												receiptDisplay();
 												customerSignupCheckout();
-											} elseif ( $_POST['custType'] == 'customerLogin' ) {
+											} elseif ( $_SESSION['custType'] == 'customerLogin' ) {
 												receiptDisplay();
 												customerLoginCheckout();
+											} elseif ($_SESSION['custType'] == 'loggedIn' ) {
+												receiptDisplay();
+												loggedInCheckout();
 											} else {
 												print "whoops!";
 											}
@@ -286,7 +293,13 @@ function customerSignupCheckout() {
 
 function customerLoginCheckout() {
 	print "<table align='center'> <form method='post' action='checkout_step3.php'>";
-	print "<tr> <td colspan='2'> <button type='submit' name='checkoutType' value='customerReturning' class='button button-icon button-icon-rarrow'> Nicks' Testing </button></td></tr>";
+	print "<tr> <td colspan='2'> <button type='submit' name='checkoutType' value='customerReturning' class='button button-icon button-icon-rarrow'> Login to Checkout </button></td></tr>";
+	print "</form> </table>";
+}
+
+function loggedInCheckout() {
+	print "<table align='center'> <form method='post' action='checkout_step3.php'>";
+	print "<tr> <td colspan='2'> <button type='submit' name='checkoutType' value='loggedIn' class='button button-icon button-icon-rarrow'> Checkout Logged In </button></td></tr>";
 	print "</form> </table>";
 }
 ?>
