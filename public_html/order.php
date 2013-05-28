@@ -157,7 +157,7 @@ $returnPage = $_SESSION['returnPage'];
 										
 										if ( $query ) {
 										
-											print "<form method='post' action='addToCart.php'>";
+											print "<form method='post' action='addToCart.php?action=add'>";
 											print "<table><tr>";
 											
 											echo "<td> $returnPage </td></tr><tr>";

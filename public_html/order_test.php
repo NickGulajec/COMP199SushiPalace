@@ -20,7 +20,7 @@ $query = mysql_query ( "
 	ORDER BY category, price
 " );
 
-$_SESSION['returnPage'] = "order.php";
+$_SESSION['returnPage'] = "order_test.php";
 $returnPage = $_SESSION['returnPage'];
 ?>
 
@@ -157,7 +157,7 @@ $returnPage = $_SESSION['returnPage'];
 										
 										if ( $query ) {
 										
-											print "<form method='post' action='addToCart_test..php'>";
+											print "<form method='post' action='addToCart_test.php?action=add'>";
 											print "<table><tr>";
 											
 											echo "<td> $returnPage </td></tr><tr>";

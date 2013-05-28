@@ -149,6 +149,14 @@ $query = mysql_query ( "
 										<?php
 
 										$_SESSION['checkoutType'] = $_POST['checkoutType'];
+										//$order_id;
+										//$order_date;
+
+										/*
+										*
+										*	GUEST CHECKOUT
+										*
+										*/
 
 										if ( $_SESSION['checkoutType'] == 'guest' ) {
 										
@@ -157,13 +165,23 @@ $query = mysql_query ( "
 											
 											if ( $first) {
 												$_SESSION['fname'] = $first;
-												if ( $phonenum ) {
-													$_SESSION['phonenum'] = $phonenum;
+
+												if ($phonenum) {
+													$phoneRegex = '^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$';
+													preg_match('`'.$phoneRegex.'`', $phonenum, $goodPhoneNumber);
+													if ( $goodPhoneNumber ) {
+														$_SESSION['phonenum'] = $goodPhoneNumber;
+													} else {
+														print "Not a valid phone number <p>";
+														print "<a href='checkout_step2.php'>Go Back</a>";
+														exit (" ");
+													}
 												} else {
 													print "Not a valid phone number <p>";
 													print "<a href='checkout_step2.php'>Go Back</a>";
 													exit (" ");
 												}
+
 											} else {
 												print "No first name <p>";
 												print "<a href='checkout_step2.php'>Go Back</a>";
@@ -184,20 +202,8 @@ $query = mysql_query ( "
 												
 											}
 											
-											mysql_query ( "INSERT INTO ORDER_TBL (customer_id) VALUES ('0')" );  // guest has customer_id of zero
-											$table_result = mysql_query ( "SELECT order_id AS 'id', order_date  AS 'date' FROM ORDER_TBL ORDER BY order_date DESC" );
-											mysql_data_seek ( $table_result, 0 );
-											$row_result = mysql_fetch_row ( $table_result );
-											$order_id = $row_result[0];
-											$order_date = $row_result[1];
-											
-											foreach ( $_SESSION['ordered'] as $key => $value ) {
-												if ( $value > 0 ) {
-													mysql_query ( "INSERT INTO ORDER_PRODUCT_TBL (order_id, product_id, quantity) VALUES ('$order_id', '$key', '$value')" )
-													or die("DB error");
-													echo $key." ".$value."<br>";
-												}
-											}
+											commitToDatabases(0);  // guest has customer_ID of zero
+
 											
 
 											
@@ -207,39 +213,47 @@ $query = mysql_query ( "
 											$total = $_SESSION['totalPayment'];
 											$formattedTotal = number_format($total, 2, '.', '');
 											print "\$$formattedTotal";
-										?>
-											
-											<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-												<input type="hidden" name="cmd" value="_xclick">
-												<input type="hidden" name="business" value="N4GM7D5GGTBQQ">
-												<input type="hidden" name="lc" value="US">
-												<input type="hidden" name="amount" value="<?php echo $formattedTotal; ?>">
-												<input type="hidden" name="item_name" value="SushiPalace Order">
-												<input type="hidden" name="button_subtype" value="services">
-												<input type="hidden" name="no_note" value="1">
-												<input type="hidden" name="no_shipping" value="1">
-												<input type="hidden" name="rm" value="1">
-												<input type="hidden" name="return" value="http://deepblue.cs.camosun.bc.ca/~comp19901/success.php">
-												<input type="hidden" name="cancel_return" value="http://deepblue.cs.camosun.bc.ca/~comp19901/">
-												<input type="hidden" name="currency_code" value="USD">
-												<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
-												<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-												<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-											</form>
+											payPalButton();
 
-										<?php
+										/*
+										*
+										*	SIGN-UP, THEN CHECKOUT
+										*
+										*/
 
 										} elseif ( $_SESSION['checkoutType'] == 'customerSignup' ) {
 
 											print "TODO:  customerSignup";
 
+										/*
+										*
+										*	SIGN IN, THEN CHECKOUT
+										*
+										*/
+
 										} elseif ( $_SESSION['checkoutType'] == 'customerReturning' ) {
 
 											print "TODO:  customerReturning";
+
+										/*
+										*
+										*	LOGGED IN USER CHECKOUT
+										*
+										*/
 											
 										} elseif ( $_SESSION['checkoutType'] == 'loggedIn' ) {
 											
-											print "TODO:  loggedIn";
+											$ID = $_SESSION['loggedInID'];
+											commitToDatabases($ID);
+											
+											echo "<br> Order Recieved at ".$order_date;
+											echo "<br> Thank You! <p> Your order number is: ".$order_id."<p>Please complete payment with PayPal, and we'll start making your sushi!<p>";
+
+											$total = $_SESSION['totalPayment'];
+											$formattedTotal = number_format($total, 2, '.', '');
+											print "\$$formattedTotal";
+
+											payPalButton();
 
 										} else {
 
@@ -247,9 +261,7 @@ $query = mysql_query ( "
 
 										}
 										?>
-										
-										
-										
+
 									</article>
 								</div>
 							</div>
@@ -277,6 +289,50 @@ $query = mysql_query ( "
 
 <?php
 
+function commitToDatabases($inID){
+
+	mysql_query ( "INSERT INTO ORDER_TBL (customer_id) VALUES ('$inID')" );
+	$table_result = mysql_query ( "SELECT order_id AS 'id', order_date  AS 'date' FROM ORDER_TBL ORDER BY order_date DESC" );
+	mysql_data_seek ( $table_result, 0 );
+	$row_result = mysql_fetch_row ( $table_result );
+	global $order_id;
+	global $order_date;
+	$order_id = $row_result[0];
+	$order_date = $row_result[1];
+	
+	foreach ( $_SESSION['ordered'] as $key => $value ) {
+		if ( $value > 0 ) {
+			mysql_query ( "INSERT INTO ORDER_PRODUCT_TBL (order_id, product_id, quantity) VALUES ('$order_id', '$key', '$value')" )
+			or die("DB error");
+		}
+	}
+}
+
+function payPalButton() {
+
+	$total = $_SESSION['totalPayment'];
+	$formattedTotal = number_format($total, 2, '.', '');
+	?>
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+		<input type="hidden" name="cmd" value="_xclick">
+		<input type="hidden" name="business" value="N4GM7D5GGTBQQ">
+		<input type="hidden" name="lc" value="US">
+		<input type="hidden" name="amount" value="<?php echo $formattedTotal; ?>">
+		<input type="hidden" name="item_name" value="SushiPalace Order">
+		<input type="hidden" name="button_subtype" value="services">
+		<input type="hidden" name="no_note" value="1">
+		<input type="hidden" name="no_shipping" value="1">
+		<input type="hidden" name="rm" value="1">
+		<input type="hidden" name="return" value="http://deepblue.cs.camosun.bc.ca/~comp19901/success.php">
+		<input type="hidden" name="cancel_return" value="http://deepblue.cs.camosun.bc.ca/~comp19901/">
+		<input type="hidden" name="currency_code" value="USD">
+		<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+		<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+		<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+	</form>
+
+	<?php
+}
 
 ?>
 

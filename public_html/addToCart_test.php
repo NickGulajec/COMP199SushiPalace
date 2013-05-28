@@ -162,6 +162,7 @@ switch ($action) {
 
 function showCart() {
 
+
 if ( isset ($_SESSION['ordered'])) {
 
 //if ( isset ( $_POST ) ) || if  isset ( $_GET ) ) {
@@ -174,7 +175,7 @@ $subtotal = null;
 
 print "<div id=\"items\">";
 print "<h1>My Cart</h1><br>";	 
-print "<form method='post' action='addToCart.php?action=update'>";
+print "<form method='post' action='addToCart_test.php?action=update'>";
 
 print "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" border=\"0\"><tr><span class=\"byline\">";
 print "<th width=\"30%\" align=\"left\">ITEM<h3></h3></th>";
@@ -231,47 +232,35 @@ print "</span></tr></table>";
 		print "$foo";
 		print "</span></div>";
 									
-		print "<div class=\"del\"  ><a href=\"addToCart.php?action=delete&id=$key\" class=\"r\">Remove</a></div>";
+		print "<div class=\"del\"  ><a href=\"addToCart_test.php?action=delete&id=$key\" class=\"r\">Remove</a></div>";
 		print "</div> ";
 		
 	    // count items
 	    $cnt++;
-	}	
-
+											}
 										} // end of foreach
-
 										print " </div>";
 
+print "<div id=\"total\">Total Cost: ";
+print "\$";
+print "<span id=\"cost\">$subtotal";
+print "</span> ";
+print "</div>";
+print "<div><button type=\"submit\">Update cart</button></div>";
+print "</form>";
+print "<br>";																				print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
+										print "<a href=\"checkout.html\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";
 
-
-	$formattedTotal = number_format($subtotal, 2, '.', '');
-
-if ($subtotal !=0){
-	print "<div id=\"total\">Total Cost: ";
-	print "\$";
-	print "<span id=\"cost\">$formattedTotal";
-	print "</span> ";
-	print "</div>";
-	print "<div><button type=\"submit\">Update cart</button></div>";
-	print "</form>";
-	print "<br>";																			print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
-											print "<a href=\"checkout.html\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";
-
-}else{
-											print "<h2>Your Cart is empty</h2>";	
-	print "<a href=\"order.html\" class=\"button button-big button-icon button-icon-rarrow\">Order</a>";
- }
-								
+										
+} else {
 									
-																				}
+										print ("Cart is empty");
+										print "<a href=\"order.html\" class=\"button button-big button-icon button-icon-rarrow\">Order</a>";
+										}
 									
 }
 
-
-
 echo showCart();
-
-
 ?>
 
 

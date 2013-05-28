@@ -11,15 +11,6 @@ cart.EffectiveCart = {
             sum += $("price" + id).innerHTML * 
                 qty;
         }.bind(this));
-	
-
-
-//$.ajax({
-//type: "POST",
-//url: "sample.php",
-//cache: false,
-//data: "data=test", //‚Æ‚É‚©‚­‚Ü‚¸’l‚ğ“n‚µ‚½‚¢‚Ì‚ÅA‰¼‚É"test"‚ğ“n‚»‚¤‚Æ‚µ‚Ä‚¢///‚Ü‚·B
-//});
         return sum;
     },
     getQty: function() {
@@ -32,5 +23,4 @@ cart.EffectiveCart = {
         }.bind(this));
         return qty;
     }
-
 }
