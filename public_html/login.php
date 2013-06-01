@@ -28,52 +28,6 @@ $home = strip_tags(trim($address));
 $number = strip_tags(trim($phoneNo));
 $mail = strip_tags(trim($email));
 
-if (!$first) {
-		echo "Error, please fill out all the areas.<br>";
-		exit ;
-	  }
-	  //echo $first;
-	  
-if (!$last) {
-		echo "Error, please fill out all the areas.<br>";
-		exit ;
-	  }
-	  //echo $last;
-
-if (!$home) {
-		echo "Error, please fill out all the areas.<br>";
-		exit ;
-	  }
-	  //echo $home;
-	  
-if (!$number) {
-		echo "Error, please fill out all the areas.<br>";
-		exit ;
-	  }
-	  //echo $number;
-
-if (!$mail) {
-		echo "Error, please fill out all the areas.<br>";
-		exit ;
-	  }
-	  //echo $mail;
-	  
-$e = '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$';
-$phone = '^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$';
-
-preg_match('`'.$e.'`', $mail, $goodEmail);
-preg_match('`'.$phone.'`', $number, $goodPhoneNumber);
-
-if (!$goodEmail) {
-		echo "Error, please enter a proper email address.<br>";
-		exit ;
-	  }
-	  
-if (!$goodPhoneNumber) {
-		echo "Error, phone number contains invalid words/characters.<br>";
-		exit ;
-	  }
-
 $LinkID = mysql_connect( $req_server, $req_username, $req_password );
 
 // Die if no connect
@@ -91,14 +45,12 @@ if ( !$db_selected ) {
 $sql="INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phone_no, customer_email)
  VALUES
  ('$first','$last','$home','$number','$mail')";
- //echo $sql;
  
  $retval = mysql_query($sql,$LinkID);
  if (!$retval)
    {
    die('Could not enter data: ' . mysql_error());
    }
-//echo "Entered data successfully\n";
    
 // Close the connection
 mysql_close($LinkID);

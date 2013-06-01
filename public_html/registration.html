@@ -26,6 +26,108 @@
 		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
 		<!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" /><![endif]-->
+		<script type="text/javascript">
+		function validateFormOnSubmit(theForm) {
+		var reason = "";
+  
+			reason += validateFirstname(theForm.firstName);
+			reason += validateLastname(theForm.lastName);
+			reason += validateEmail(theForm.email);
+			reason += validatePhone(theForm.phoneNo);
+			reason += validateEmpty(theForm.address);
+      
+		if (reason != "") {
+			alert("Some fields need correction:\n" + reason);
+			return false;
+		}
+
+		alert("Registration complete");
+		return true;
+		}
+		function validateEmpty(fld) {
+		var error = "";
+ 
+			if (fld.value.length == 0) {
+				fld.style.background = 'Yellow'; 
+				error = "An address has not been entered.\n"
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;  
+		}
+		function validateFirstname(fld) {
+			var error = "";
+			var legalChars = /^[A-Za-z]+$/; // allow letters only
+ 
+			if (fld.value == "") {
+				fld.style.background = 'Yellow'; 
+				error = "You didn't enter a first name.\n";
+			} else if (!legalChars.test(fld.value)) {
+				fld.style.background = 'Yellow'; 
+				error = "The name contains illegal characters.\n";
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;
+		}
+		function validateLastname(fld) {
+			var error = "";
+			var legalChars = /^[A-Za-z]+$/; // allow letters only
+ 
+			if (fld.value == "") {
+				fld.style.background = 'Yellow'; 
+				error = "You didn't enter a last name.\n";
+			} else if (!legalChars.test(fld.value)) {
+				fld.style.background = 'Yellow'; 
+				error = "The name contains illegal characters.\n";
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;
+		}  
+		function trim(s)
+		{
+		return s.replace(/^\s+|\s+$/, '');
+		}
+		function validateEmail(fld) {
+			var error="";
+			var tfld = trim(fld.value);                    // value of field with whitespace trimmed off
+			var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+			var illegalChars= /[\(\)\<\>\,\;\:\\\"\[\]]/ ;
+   
+			if (fld.value == "") {
+				fld.style.background = 'Yellow';
+				error = "You didn't enter an email address.\n";
+			} else if (!emailFilter.test(tfld)) {          //test email for illegal characters
+				fld.style.background = 'Yellow';
+				error = "Please enter a valid email address.\n";
+			} else if (fld.value.match(illegalChars)) {
+				fld.style.background = 'Yellow';
+				error = "The email address contains illegal characters.\n";
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;
+		}
+		function validatePhone(fld) {
+			var error = "";
+			var stripped = fld.value.replace(/[\(\)\.\-\ ]/g, '');    
+
+		if (fld.value == "") {
+				error = "You didn't enter a phone number.\n";
+				fld.style.background = 'Yellow';
+			} else if (isNaN(parseInt(stripped))) {
+				error = "The phone number contains illegal characters.\n";
+				fld.style.background = 'Yellow';
+			} else if (!(stripped.length == 10)) {
+				error = "The phone number is the wrong length. Make sure you included an area code.\n";
+				fld.style.background = 'Yellow';
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;
+		}
+		</script>
 	</head>
 	<body class="no-sidebar">
 	
@@ -72,14 +174,29 @@
 									<header class="major">
 										<h2>Enter your information</h2>
 									</header>
-									<form method="post" action="login.php">
-										<br>First Name:<input name="firstName" type="text" value ="">
-										<br>Last Name:<input name="lastName" type="text" value ="">
-										<br>Address:<input name="address" type="text" value ="">
-										<br>Phone Number:<input name="phoneNo" type="text" value ="">
-										<br>E-mail:<input name="email" type="text" value ="">
+									<form name="registerForm" onsubmit="return validateFormOnSubmit(this)" action="login.php" method="post">
+										<table summary="Registration form">
+											<tbody>
+											<tr>
+												<td><label for="firstName">First name:</label></td>
+												<td><input name="firstName" type="text"></td>
+											</tr> <tr>
+												<td><label for="lastName">Last name:</label></td>
+												<td><input name="lastName" type="text"></td>
+											</tr> <tr>
+												<td><label for="email">Email:</label></td>
+												<td><input name="email" type="text"></td>
+											</tr> <tr>
+												<td><label for="phoneNo">Telephone number:</label></td>
+												<td><input name="phoneNo" type="text"></td>
+											</tr> <tr>
+												<td><label for="address">Address:</label></td>
+												<td><input name="address" type="text"></td>
+											</tr>   
+											</tbody>
+										</table>
 											<footer>
-											<input value="Register" type="submit" class="button button-medium button-icon button-icon-rarrow">
+											<input name="Register" value="Register" type="submit" class="button button-medium button-icon button-icon-rarrow">
 											</form>
 											</footer>
 								</div>
