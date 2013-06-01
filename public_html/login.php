@@ -87,6 +87,25 @@ $returnPage = $_SESSION['returnPage'];
 		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
 		<!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" /><![endif]-->
+		<script>
+		function validateForm()
+		{
+		var x=document.forms["emailForm"]["email"].value;
+		var atpos=x.indexOf("@");
+		var dotpos=x.lastIndexOf(".");
+		if (x==null || x=="")
+			{
+				alert("Email must be entered");
+				return false;
+			}
+		if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+			{
+				alert("Not a valid e-mail address");
+				return false;
+			}
+		}
+</script>
+
 	</head>
 	<body class="no-sidebar">
 	
@@ -135,7 +154,7 @@ $returnPage = $_SESSION['returnPage'];
 												<h2>Returning Customer</h2>
 											</header>
 											<p>Enter Email</p>
-											<form method="post" action="<?php echo $returnPage ?>">
+											<form name="emailForm" onsubmit="return validateForm()" method="post" action="<?php echo $returnPage ?>">
 											E-mail:<input name="email" type="text" value ="">
 											<footer>
 											<input value="Login" type="submit" class="button button-medium button-icon button-icon-rarrow">
@@ -149,7 +168,7 @@ $returnPage = $_SESSION['returnPage'];
 												<h2>Guest</h2>
 											</header>
 											<footer>
-												<a href="<?php echo $returnPage ?>" class="button button-medium button-icon button-icon-rarrow">Continue Shopping</a>
+												<a href="order.php" class="button button-medium button-icon button-icon-rarrow">Continue Shopping</a>
 												<a href="registration.html#" class="button button-medium button-alt button-icon button-icon-info">Register</a>
 											</footer>
 										</section>
