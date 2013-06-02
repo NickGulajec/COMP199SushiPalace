@@ -2,6 +2,8 @@
 include_once ( "../session.php" );
 $_SESSION['returnPage'] = "index.php";
 $returnPage = $_SESSION['returnPage'];
+$loggedInID = "";
+$_SESSION['loggedInID'];
 ?>
 
 
@@ -58,7 +60,17 @@ $returnPage = $_SESSION['returnPage'];
 													<li><a href="menu.html">Menu</a></li>
 													<li><a href="order.html">Order</a></li>
 													<li><a href="about.html">About</a></li>
-													<li><a href="login.html">Login</a></li> <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
+													<li><?php
+															if (isset($_SESSION['loggedInID'])) {
+														?>
+														<a href="logout.php">Logout</a></li>
+														<?php
+															} else {
+														?>
+														<a href="login.html">Login</a></li>
+														<?php
+															}
+														?>
 												</ul>
 											</nav>
 									
@@ -92,8 +104,12 @@ $returnPage = $_SESSION['returnPage'];
 								<div class="12u">
 									<header class="major">
 										<h2>MyPalace</h2>
+										<?php if (isset($_SESSION['loggedInID'])) { ?>
+										Welcome back.
+										<?php } else { ?>
 										<span class="byline">Login to your account</span>
 										<a href="login.html" class="button button-icon button-icon-info">Login</a>
+										<?php } ?>
 									</header>
 								</div>
 							</div>

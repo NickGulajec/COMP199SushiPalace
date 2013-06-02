@@ -129,7 +129,7 @@ $returnPage = $_SESSION['returnPage'];
 													<li><a href="menu.html">Menu</a></li>
 													<li><a href="order.html">Order</a></li>
 													<li><a href="about.html">About</a></li>
-													<li class="current_page_item"><a href="login.html">Login</a></li> <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
+													<li class="current_page_item"><a href="login.html">Login</a></li> <!-- will always be login on this page -->
 												</ul>
 											</nav>
 									
@@ -154,7 +154,7 @@ $returnPage = $_SESSION['returnPage'];
 												<h2>Returning Customer</h2>
 											</header>
 											<p>Enter Email</p>
-											<form name="emailForm" onsubmit="return validateForm()" method="post" action="<?php echo $returnPage ?>">
+											<form name="emailForm" onsubmit="return validateForm()" method="post" action="checklogin.php">
 											E-mail:<input name="email" type="text" value ="">
 											<footer>
 											<input value="Login" type="submit" class="button button-medium button-icon button-icon-rarrow">
