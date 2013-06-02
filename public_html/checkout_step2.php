@@ -1,9 +1,9 @@
 <?php
 
-$_SESSION['returnPage'] = "checkout.php";
-
-require ( "../credentials.php" );
 include_once ( "../session.php" );
+require ( "../credentials.php" );
+
+$_SESSION['returnPage'] = "checkout_step2.php";
 
 $LinkID = mysql_connect ( $req_server, $req_username, $req_password );
 if ( !$LinkID ) {
@@ -42,6 +42,128 @@ $query = mysql_query ( "
 		<script type="text/javascript" src="js/paypal-button.min.js"></script>
 
 		<script src="js/init.js"></script>
+
+		<!-- 		-{[| FORM VALIDATION FUNCTIONS |]}-			-->
+		<script type="text/javascript">
+
+		function validateRegisterFormOnSubmit(theForm) {
+			var reason = "";
+	  			reason += validateFirstname(theForm.firstName);
+				reason += validateLastname(theForm.lastName);
+				reason += validateEmail(theForm.email);
+				reason += validatePhone(theForm.phoneNo);
+				reason += validateEmpty(theForm.address);
+	      
+			if (reason != "") {
+				alert("Some fields need correction:\n" + reason);
+				return false;
+			}
+
+			// Registration successful
+			return true;
+		}
+
+		function validateLoginFormOnSubmit(theForm) {
+			var reason = "";
+				reason += validateEmail(theForm.email);
+
+			if (reason != "") {
+				alert("Some fields need correction:\n" + reason);
+				return false;
+			}
+			// Proceed to lookup of email in DB
+			return true;
+		}
+
+		function validateEmpty(fld) {
+			var error = "";
+
+ 			if (fld.value.length == 0) {
+				fld.style.background = 'Yellow'; 
+				error = "An address has not been entered.\n"
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;  
+		}
+
+		function validateFirstname(fld) {
+			var error = "";
+			var legalChars = /^[A-Za-z]+$/; // allow letters only
+
+ 			if (fld.value == "") {
+				fld.style.background = 'Yellow'; 
+				error = "You didn't enter a first name.\n";
+			} else if (!legalChars.test(fld.value)) {
+				fld.style.background = 'Yellow'; 
+				error = "The name contains illegal characters.\n";
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;
+		}
+
+		function validateLastname(fld) {
+			var error = "";
+			var legalChars = /^[A-Za-z]+$/; // allow letters only
+ 
+ 			if (fld.value == "") {
+				fld.style.background = 'Yellow'; 
+				error = "You didn't enter a last name.\n";
+			} else if (!legalChars.test(fld.value)) {
+				fld.style.background = 'Yellow'; 
+				error = "The name contains illegal characters.\n";
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;
+		}  
+
+		function trim(s){
+			return s.replace(/^\s+|\s+$/, '');
+		}
+
+		function validateEmail(fld) {
+			var error="";
+			var tfld = trim(fld.value);                    // value of field with whitespace trimmed off
+			var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+			var illegalChars= /[\(\)\<\>\,\;\:\\\"\[\]]/ ;
+   
+			if (fld.value == "") {
+				fld.style.background = 'Yellow';
+				error = "You didn't enter an email address.\n";
+			} else if (!emailFilter.test(tfld)) {          //test email for illegal characters
+				fld.style.background = 'Yellow';
+				error = "Please enter a valid email address.\n";
+			} else if (fld.value.match(illegalChars)) {
+				fld.style.background = 'Yellow';
+				error = "The email address contains illegal characters.\n";
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;
+		}
+
+		function validatePhone(fld) {
+			var error = "";
+			var stripped = fld.value.replace(/[\(\)\.\-\ ]/g, '');    
+
+			if (fld.value == "") {
+					error = "You didn't enter a phone number.\n";
+					fld.style.background = 'Yellow';
+			} else if (isNaN(parseInt(stripped))) {
+				error = "The phone number contains illegal characters.\n";
+				fld.style.background = 'Yellow';
+			} else if (!(stripped.length == 10)) {
+				error = "The phone number is the wrong length. Make sure you included an area code.\n";
+				fld.style.background = 'Yellow';
+			} else {
+				fld.style.background = 'White';
+			}
+			return error;
+		}
+		</script>
+
 		<noscript>
 			<link rel="stylesheet" href="css/5grid/core.css" />
 			<link rel="stylesheet" href="css/5grid/core-desktop.css" />
@@ -90,7 +212,18 @@ $query = mysql_query ( "
 										<li><a href="menu.html">Menu</a></li>
 										<li class="current_page_item"><a href="order.html">Order</a></li>
 										<li><a href="about.html">About</a></li>
-										<li><a href="login.html">Login</a></li>  <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
+										<?php 
+										if ( isset ($_SESSION['loggedInID'] ) ) {
+											?>
+											 <li><a href="logout.php">Logout</a></li>
+											<?php
+										} else {
+											?>
+											<li><a href="login.html">Login</a></li>
+
+											<?php
+										}
+										?>
 									</ul>
 								</nav>
 							</div>
@@ -112,6 +245,23 @@ $query = mysql_query ( "
 								<div id="sidebar">
 									<section>
 										<header>
+											<h4>MyPalace</h4>
+											<?php 
+											if ( isset ( $_SESSION['loggedInID'] ) ) {
+												?>
+												<p>Sign out of your account</p>
+												<a href="logout.php" class="button button-icon button-icon-info">Logout</a>
+												<?php
+											} else {
+												?>
+												<p>Login to your account</p>
+												<a href="login.html" class="button button-icon button-icon-info">Login</a>
+											<?php
+											}
+											?>
+										</header>
+
+										<header>
 											<br>
 											1111 Palace St</br>
 											Victoria B.C.  V8M 5J7</br>
@@ -121,6 +271,7 @@ $query = mysql_query ( "
 											<p>
 											
 										</header>
+
 										Local Partnerships:<br>
 										<ul>
 											<li><a href="http://www.finestatsea.com/">Finest At Sea</a></li>
@@ -131,13 +282,6 @@ $query = mysql_query ( "
 										All our seafood is regionally sourced from OceanWise partners.<br>
 										We buy only organic ingredients for rice, vegetables, and condiments.<br>
 										</span>
-										<footer>
-											<h4>MyPalace</h4>
-											
-											<p>Login to your account</p>
-											
-											<a href="login.html" class="button button-icon button-icon-info">Login</a>
-										</footer>
 									</section>
 								</div>
 							</div>
@@ -147,6 +291,12 @@ $query = mysql_query ( "
 									<!-- Content -->
 									<article>
 										<?php 
+
+										if ( isset ( $_SESSION['loggedInID'] ) ) {
+											receiptDisplay();
+											loggedInCheckout();
+											exit();
+										}
 										
 										if ( isset ( $_POST['deliveryType'] ) ) {
 											$_SESSION['deliveryType'] = $_POST['deliveryType'];
@@ -271,28 +421,30 @@ function receiptDisplay() {
 
 function guestCheckout() {
 	print "<table align='center'> <form method='post' action='checkout_step3.php'>";
-	print "<tr> <td> First Name </td><td align='right'> <input type='text' name='fname'> </td> </tr>";
-	print "<tr> <td> Phone Number </td><td align='right'> <input type='text' name='phonenum'> </td> </tr>";
+	print "<tr> <td align='right'> First Name 		</td><td align='left'> 	<input type='text' name='fname'> 		</td> </tr>";
+	print "<tr> <td align='right'> Phone Number 	</td><td align='left'> 	<input type='text' name='phonenum'> 	</td> </tr>";
 	if ( $_SESSION['deliveryType'] == 'delivery' ) {
-		print "<tr> <td> Address </td><td align='right'> <input type='text' name='address'> </td> </tr>";
+		print "<tr> <td align='right'> Address 		</td><td align='right'> <input type='text' name='address'> 		</td> </tr>";
 	}
-	print "<tr> <td colspan='2'> <button type='submit' name='checkoutType' value='guest' class='button button-icon button-icon-rarrow'> Guest Checkout </button></td></tr>";
+	print "</table><table align='center'>";
+	print "<tr> <td colspan='2' align='center'> <button type='submit' name='checkoutType' value='guest' class='button button-icon button-icon-rarrow'> Guest Checkout </button></td></tr>";
 	print "</form> </table>";
 }
 
 function customerSignupCheckout() {
-	print "<table align='center'> <form method='post' action='checkout_step3.php'>";
-	print "<tr> <td> First Name </td><td align='right'> <input type='text' name='fname'> </td> </tr>";
-	print "<tr> <td> Last Name </td><td align='right'> <input type='text' name='lname'> </td> </tr>";
-	print "<tr> <td> Email </td><td align='right'> <input type='text' name='email'> </td> </tr>";
-	print "<tr> <td> Phone Number </td><td align='right'> <input type='text' name='phonenum'> </td> </tr>";
-	print "<tr> <td> Address </td><td align='right'> <input type='text' name='address'> </td> </tr>";
-	print "<tr> <td colspan='2'> <button type='submit' name='checkoutType' value='customerSignup' class='button button-icon button-icon-rarrow'> Signup and Checkout</button></td></tr>";
+	print "<table align='center'> <form name='registerForm' onsubmit='return validateRegisterFormOnSubmit(this)' method='post' action='checkout_register.php' >";
+	print "<tr> <td> First Name </td><td align='right'> <input type='text' name='firstName'> </td><td> </td><td> </td> </tr>";
+	print "<tr> <td> Last Name </td><td align='right'> <input type='text' name='lastName'> </td><td> </td><td> </td> </tr>";
+	print "<tr> <td> Email </td><td align='right'> <input type='text' name='email'> </td><td> </td><td> </td> </tr>";
+	print "<tr> <td> Phone Number </td><td align='right'> <input type='text' name='phoneNo'> </td><td> </td><td> </td> </tr>";
+	print "<tr> <td> Address </td><td align='right'> <input type='text' name='address'> </td><td> </td><td> </td> </tr>";
+	print "<tr> <td colspan='2'><input name='Register' value='Register' type='submit' class='button button-medium button-icon button-icon-rarrow'> </button></td></tr>";
 	print "</form> </table>";
 }
 
 function customerLoginCheckout() {
-	print "<table align='center'> <form method='post' action='checkout_step3.php'>";
+	print "<table align='center'> <form name='loginForm' onsubmit='return validateLoginFormOnSubmit(this)' method='post' action='checkout_login.php'>";
+	print "<tr> <td> Email </td><td align='right'> <input type='text' name='email'> </td><td> </td><td> </td> </tr>";
 	print "<tr> <td colspan='2'> <button type='submit' name='checkoutType' value='customerReturning' class='button button-icon button-icon-rarrow'> Login to Checkout </button></td></tr>";
 	print "</form> </table>";
 }

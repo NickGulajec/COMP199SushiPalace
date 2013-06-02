@@ -1,9 +1,9 @@
 <?php
 
-$_SESSION['returnPage'] = "checkout.php";
-
 require ( "../credentials.php" );
 include_once ( "../session.php" );
+
+$_SESSION['returnPage'] = "checkout.php";
 
 $LinkID = mysql_connect ( $req_server, $req_username, $req_password );
 if ( !$LinkID ) {
@@ -90,7 +90,18 @@ $query = mysql_query ( "
 										<li><a href="menu.html">Menu</a></li>
 										<li class="current_page_item"><a href="order.html">Order</a></li>
 										<li><a href="about.html">About</a></li>
-										<li><a href="login.html">Login</a></li>  <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
+										<?php 
+										if ( isset ($_SESSION['loggedInID'] ) ) {
+											?>
+											 <li><a href="logout.php">Logout</a></li>
+											<?php
+										} else {
+											?>
+											<li><a href="login.html">Login</a></li>
+
+											<?php
+										}
+										?>
 									</ul>
 								</nav>
 							</div>
@@ -112,6 +123,23 @@ $query = mysql_query ( "
 								<div id="sidebar">
 									<section>
 										<header>
+											<h4>MyPalace</h4>
+											<?php 
+											if ( isset ( $_SESSION['loggedInID'] ) ) {
+												?>
+												<p>Sign out of your account</p>
+												<a href="logout.php" class="button button-icon button-icon-info">Logout</a>
+												<?php
+											} else {
+												?>
+												<p>Login to your account</p>
+												<a href="login.html" class="button button-icon button-icon-info">Login</a>
+											<?php
+											}
+											?>
+										</header>
+
+										<header>
 											<br>
 											1111 Palace St</br>
 											Victoria B.C.  V8M 5J7</br>
@@ -121,6 +149,7 @@ $query = mysql_query ( "
 											<p>
 											
 										</header>
+
 										Local Partnerships:<br>
 										<ul>
 											<li><a href="http://www.finestatsea.com/">Finest At Sea</a></li>
@@ -131,13 +160,6 @@ $query = mysql_query ( "
 										All our seafood is regionally sourced from OceanWise partners.<br>
 										We buy only organic ingredients for rice, vegetables, and condiments.<br>
 										</span>
-										<footer>
-											<h4>MyPalace</h4>
-											
-											<p>Login to your account</p>
-											
-											<a href="login.html" class="button button-icon button-icon-info">Login</a>
-										</footer>
 									</section>
 								</div>
 							</div>

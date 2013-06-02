@@ -2,7 +2,6 @@
 
 include_once ( "../session.php" );
 
-$_SESSION['returnPage'] = "checkout.php";
 
 ?>
 
@@ -74,18 +73,7 @@ $_SESSION['returnPage'] = "checkout.php";
 										<li><a href="menu.html">Menu</a></li>
 										<li class="current_page_item"><a href="order.html">Order</a></li>
 										<li><a href="about.html">About</a></li>
-										<?php 
-										if ( isset ($_SESSION['loggedInID'] ) ) {
-											?>
-											 <li><a href="logout.php">Logout</a></li>
-											<?php
-										} else {
-											?>
-											<li><a href="login.html">Login</a></li>
-
-											<?php
-										}
-										?>
+										<li><a href="login.html">Login</a></li>  <!-- will always be login on this page -->
 									</ul>
 								</nav>
 							</div>
@@ -105,19 +93,24 @@ $_SESSION['returnPage'] = "checkout.php";
 							
 								<!-- Sidebar -->
 								<div id="sidebar">
-<section>
+									<section>
 										<header>
 											<h4>MyPalace</h4>
+
 											<?php 
 											if ( isset ( $_SESSION['loggedInID'] ) ) {
 												?>
 												<p>Sign out of your account</p>
+
 												<a href="logout.php" class="button button-icon button-icon-info">Logout</a>
+
 												<?php
 											} else {
 												?>
 												<p>Login to your account</p>
+												
 												<a href="login.html" class="button button-icon button-icon-info">Login</a>
+
 											<?php
 											}
 											?>
@@ -133,7 +126,7 @@ $_SESSION['returnPage'] = "checkout.php";
 											<p>
 											
 										</header>
-
+										
 										Local Partnerships:<br>
 										<ul>
 											<li><a href="http://www.finestatsea.com/">Finest At Sea</a></li>
@@ -144,6 +137,7 @@ $_SESSION['returnPage'] = "checkout.php";
 										All our seafood is regionally sourced from OceanWise partners.<br>
 										We buy only organic ingredients for rice, vegetables, and condiments.<br>
 										</span>
+										
 									</section>
 								</div>
 							</div>
@@ -152,55 +146,16 @@ $_SESSION['returnPage'] = "checkout.php";
 
 									<!-- Content -->
 									<article>
-										<form method="post" action="checkout_step2.php">
-											<table>
-												<tr>
-													<td colspan="2" align="center"> <h3> Your Order </h3> </td>
-												</tr>
-												<tr><td> &#160;</td></tr>
-												<tr>
-													<td align="right"> Choose a delivery method: </td>
-													<td>
-														<select name="deliveryType">
-															<option value="" selected> </option>
-															<option value="takeout"> Pick Up / Take Out </option>
-															<option value="delivery"> Deliver My Order! </option>
-														</select>
-													</td>
-												</tr>
-												<tr><td> &#160;</td></tr>
-												<?php
-												if (isset($_SESSION['loggedInID'])) {
-												?>
-												<tr>
-													<td> &#160;</td>
-													<td>
-														<button type="submit" name="custType" value="loggedIn" class="button button-icon button-icon-rarrow"> Signed-in Checkout </button>
-													</td>
-												</tr>
-												
-												<?php
-												} else {
-												?>
-												<tr>
-													<td>
-														<button type="submit" name="custType" value="guest" class="button button-icon button-icon-rarrow"> Checkout as Guest </button>
-													</td>
-													<td>
-														<button type="submit" name="custType" value="customerSignup" class="button button-icon button-icon-rarrow"> Sign Up to Checkout</button>
-													</td>
-												</tr>
-												<tr>
-													<td> &#160;</td>
-													<td>
-														<button type="submit" name="custType" value="customerLogin" class="button button-icon button-icon-rarrow"> Login to Checkout </button>
-													</td>
-												</tr>
-												<?php
-												}
-												?>
-											</table>
-										</form>
+										
+										<div>
+											<span style="font-weight:bold">Sorry, that email is not in the customer database! </span><p>
+										</div>
+										<div>
+											<?php 
+											print "<a href='".$_SESSION['returnPage']."' class='button button-medium button-icon button-icon-rarrow'> Continue </a>";
+											?>
+										</div>
+									
 										
 										
 										
