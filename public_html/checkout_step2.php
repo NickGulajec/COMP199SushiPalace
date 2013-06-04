@@ -291,17 +291,24 @@ $query = mysql_query ( "
 									<article>
 										<?php 
 
-										if ( isset ( $_SESSION['loggedInID'] ) ) {
-											receiptDisplay();
-											loggedInCheckout();
-											exit();
-										}
-										
 										if ( isset ( $_POST['deliveryType'] ) ) {
 											$_SESSION['deliveryType'] = $_POST['deliveryType'];
 										}
 										if ( isset ( $_POST['custType'] ) ) {
 											$_SESSION['custType'] = $_POST['custType'];
+										}
+
+										if ( isset ( $_SESSION['loggedInID'] ) ) {
+											if ( $_SESSION['deliveryType'] == 'takeout' || $_SESSION['deliveryType'] == 'delivery' ) {
+												receiptDisplay();
+												loggedInCheckout();
+												exit();
+											} else {
+												print "Please choose a delivery method! <p>";
+												print "<a href='checkout.php'>Go Back</a>";
+												exit();
+											}
+											
 										}
 										
 										if ( $_SESSION['deliveryType'] == 'takeout' || $_SESSION['deliveryType'] == 'delivery' ) {
