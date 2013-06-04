@@ -9,7 +9,6 @@
 
 //fuction to get order_id - the last order from a logged in customer(not implemented yet...)
 
-$order_id = 1;		// hard-coded for now
 
 require ( "../credentials.php" );
 include_once ( "../session.php" );
@@ -23,7 +22,15 @@ $db_selected = mysql_select_db ( 'sushiC199' );
 if ( !$db_selected ) {
     die( 'Could not select database: ' . mysql_error ( ) );
 }
+$user = $_SESSION['loggedInID'];
 
+// find the last order number
+$orderID_table_result = mysql_query ( "SELECT order_id FROM ORDER_TBL WHERE customer_id = $user ORDER BY order_id DESC" );
+mysql_data_seek ( $orderID_table_result, 0 );
+$orderID_row_result = mysql_fetch_row ( $orderID_table_result );
+$order_id = $orderID_row_result[0];
+
+// use last order number to populate session['ordered']
 $table_result = mysql_query ( "SELECT product_id, quantity FROM ORDER_PRODUCT_TBL WHERE order_id = $order_id" );
 mysql_data_seek ( $table_result, 0 );
 $row_result = "";

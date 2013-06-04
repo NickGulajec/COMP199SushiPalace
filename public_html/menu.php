@@ -85,8 +85,18 @@ $_SESSION['returnPage'] = "menu.php";
 										<li><a href="index.html">Home</a></li>
 										<li class="current_page_item"><a href="menu.php">Menu</a></li>
 										<li><a href="order.php">Order</a></li>
-										<li><a href="about.html">About</a></li>
-										<li><a href="login.html">Login</a></li>  <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
+										<?php 
+										if ( isset ($_SESSION['loggedInID'] ) ) {
+											?>
+											 <li><a href="logout.php">Logout</a></li>
+											<?php
+										} else {
+											?>
+											<li><a href="login.html">Login</a></li>
+
+											<?php
+										}
+										?>
 									</ul>
 								</nav>
 							</div>

@@ -3,7 +3,7 @@ include_once ( "../session.php" );
 $_SESSION['returnPage'] = "index.php";
 $returnPage = $_SESSION['returnPage'];
 $loggedInID = "";
-$_SESSION['loggedInID'];
+//$_SESSION['loggedInID'];
 ?>
 
 
@@ -59,7 +59,6 @@ $_SESSION['loggedInID'];
 													<li class="current_page_item"><a href="index.html">Home</a></li>
 													<li><a href="menu.html">Menu</a></li>
 													<li><a href="order.html">Order</a></li>
-													<li><a href="about.html">About</a></li>
 													<li><?php
 															if (isset($_SESSION['loggedInID'])) {
 														?>

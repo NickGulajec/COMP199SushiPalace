@@ -92,8 +92,18 @@ $returnPage = $_SESSION['returnPage'];
 										<li><a href="index.html">Home</a></li>
 										<li><a href="menu.html">Menu</a></li>
 										<li class="current_page_item"><a href="order.html">Order</a></li>
-										<li><a href="about.html">About</a></li>
-										<li><a href="login.html">Login</a></li>  <!-- // should be dynamic - if user is logged in, "Welcome (user)" -->
+										<?php 
+										if ( isset ($_SESSION['loggedInID'] ) ) {
+											?>
+											 <li><a href="logout.php">Logout</a></li>
+											<?php
+										} else {
+											?>
+											<li><a href="login.html">Login</a></li>
+
+											<?php
+										}
+										?>
 									</ul>
 								</nav>
 							</div>
@@ -115,6 +125,24 @@ $returnPage = $_SESSION['returnPage'];
 								<div id="sidebar">
 									<section>
 										<header>
+											<h4>MyPalace</h4>
+											<?php 
+											if ( isset ( $_SESSION['loggedInID'] ) ) {
+												?>
+												<a href="lastOrder.php" class="button button-icon button-icon-info">Last Order</a>
+												</p>Sign out of your account<br>
+												<a href="logout.php" class="button button-icon button-icon-info">Logout</a>
+												<?php
+											} else {
+												?>
+												</p>Login to your account<br>
+												<a href="login.html" class="button button-icon button-icon-info">Login</a>
+											<?php
+											}
+											?>
+										</header>
+
+										<header>
 											<br>
 											1111 Palace St</br>
 											Victoria B.C.  V8M 5J7</br>
@@ -124,6 +152,7 @@ $returnPage = $_SESSION['returnPage'];
 											<p>
 											
 										</header>
+
 										Local Partnerships:<br>
 										<ul>
 											<li><a href="http://www.finestatsea.com/">Finest At Sea</a></li>
@@ -134,13 +163,7 @@ $returnPage = $_SESSION['returnPage'];
 										All our seafood is regionally sourced from OceanWise partners.<br>
 										We buy only organic ingredients for rice, vegetables, and condiments.<br>
 										</span>
-										<footer>
-											<h4>MyPalace</h4>
-											
-											<p>Login to your account</p>
-											
-											<a href="login.html" class="button button-icon button-icon-info">Login</a>
-										</footer>
+									</section>
 									</section>
 								</div>
 							</div>
@@ -160,11 +183,8 @@ $returnPage = $_SESSION['returnPage'];
 											print "<form method='post' action='addToCart.php?action=add'>";
 											print "<table><tr>";
 											
-											echo "<td> $returnPage </td></tr><tr>";
-											
 											mysql_data_seek ( $query, 0 );		//$query grabs rows of [category, product_id, product_name AS 'Item', price AS 'Price'] 
 											$fetched_row = "";
-											
 											
 											// state variables for operating on current row
 											$row_label = "";		
@@ -172,12 +192,6 @@ $returnPage = $_SESSION['returnPage'];
 											$category_old = "";
 											$labeled = false;
 											$price_align = false;
-											
-											
-											// Ex-Table Headers, Mayumi you may still need header code here
-											
-											// ...
-											
 											
 											// Main Loop
 											while ( $fetched_row = mysql_fetch_row ( $query ) ) {	// Go through the query results one row at a time
@@ -200,7 +214,7 @@ $returnPage = $_SESSION['returnPage'];
 													
 														if ( $labeled == false ) {		// select box for current row has not been labelled yet
 																						
-															print "<td></td>";		// maybe don't need this?? will test later..
+															print "<td></td>";		// formatting
 															$row_label = $v;		
 															$labeled = true;	//  We've now handled the category and product_id.  
 													

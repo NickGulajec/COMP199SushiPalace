@@ -73,7 +73,6 @@ $_SESSION['returnPage'] = "checkout.php";
 										<li><a href="index.html">Home</a></li>
 										<li><a href="menu.html">Menu</a></li>
 										<li class="current_page_item"><a href="order.html">Order</a></li>
-										<li><a href="about.html">About</a></li>
 										<li><a href="login.html">Login</a></li>  <!-- will always be login on this page -->
 									</ul>
 								</nav>

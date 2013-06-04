@@ -26,9 +26,9 @@ if ( $row_result ) {
 	
 } else {
 
-echo "Sorry, that email is not in our database."
+echo "Sorry, that email is not in our database.";
 
-echo "Please register or try again."
+echo "Please register or try again.";
 
 exit;
 
