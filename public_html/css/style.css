@@ -780,26 +780,32 @@ div#items{
     margin: 5px 2px 1px 2px;
     width: 400px;
     border-collapse:collapse;
+
 }
 div.item {
     height: 75px;
 }
 div.item div{
+    display: table-cell;
     padding: 5px;
     border-bottom:2px solid #fff;
     background: #eeeeff;
     float: left;
-    width: 50px;
+    width: 80px;
     height: 58px;
     vertical-align: middle;
 }
 div.item div.name, div.item div.price, div.item div.qty, div.item div.del {
+    display: table-cell;
     padding-top: 20px;
     padding-left: 3px;
-    height: 43px;
+    height: 60px;
+    display: table-cell;
+    vertical-align: middle;
 }
 div.item div.name {
     width: 140px;
+
 }
 div.item div.price {
     width: 60px;
@@ -813,3 +819,13 @@ div.item div.price {
     color: #f06;
     font-weight: bold;
 }
+
+table#menulist tr.odd{
+background:#eeeeff;
+}
+
+table#orderlist tr:nth-child(odd) {
+  background-color: #eeeeff;
+}
+
+

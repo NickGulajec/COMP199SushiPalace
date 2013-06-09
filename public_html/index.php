@@ -102,10 +102,10 @@ $loggedInID = "";
 							<div class="row">
 								<div class="12u">
 									<header class="major">
-										<h2>MyPalace</h2>
 										<?php if (isset($_SESSION['loggedInID'])) { ?>
-										Welcome back.
+										<h2>Welcome back.</h2>
 										<?php } else { ?>
+										<h2>MyPalace</h2>
 										<span class="byline">Login to your account</span>
 										<a href="login.html" class="button button-icon button-icon-info">Login</a>
 										<?php } ?>

@@ -1,16 +1,10 @@
 <?php
-/*
- Program Name  :        order.php
- Author name   :        Nick Gulajec
- Date Created  :        April 19, 2013
- Date Modified :        Jun 8, 2013
- Description   :		Customer can choose menu item quantities
- 						List of items is populated by the database
- 						$_POST vars and naviagation from order.php are directed to addToCart.php
-*/
-include_once ( "../session.php" );
+
+
 
 require ( "../credentials.php" );
+include_once ( "../session.php" );
+
 $LinkID = mysql_connect ( $req_server, $req_username, $req_password );
 if ( !$LinkID ) {
 	die( 'Could not connect: ' . mysql_error ( ) );
@@ -30,6 +24,9 @@ $_SESSION['returnPage'] = "order.php";
 $returnPage = $_SESSION['returnPage'];
 ?>
 
+
+
+<!DOCTYPE HTML>
 <!--
 	ZeroFour 1.0 by HTML5 Up!
 	html5up.net | @n33co
@@ -38,10 +35,12 @@ $returnPage = $_SESSION['returnPage'];
 <html>
 	<head>
 		<title>Sushi Palace Order Form</title>
+		
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="Order take-out or delivery from Sushi Palace" />
 		<meta name="keywords" content="Sushi Palace Order" />
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800" rel="stylesheet" type="text/css" />
+		
 		<script src="js/jquery-1.8.3.min.js"></script>
 		<script src="css/5grid/init.js?use=mobile,desktop,1000px&amp;mobileUI=1&amp;mobileUI.theme=none"></script>
 		<script src="js/jquery.dropotron-1.2.js"></script>
@@ -54,27 +53,39 @@ $returnPage = $_SESSION['returnPage'];
 			<link rel="stylesheet" href="css/style.css" />
 			<link rel="stylesheet" href="css/style-desktop.css" />
 		</noscript>
+		
 		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
 		<!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" /><![endif]-->
 		
 		<!-- page specific table style -->
 		<style>  
-			table { width:80%; }
-			td { padding:1px 7px 2px 7px; }
+			table
+			{
+				width:80%;
+			}
+			td
+			{
+				padding:1px 7px 2px 7px;
+			}
 		</style>
 	</head>
+	
 	<body class="left-sidebar">
+	
 		<!-- Header Wrapper -->
 		<div id="header-wrapper">
 			<div class="5grid-layout">
 				<div class="row">
 					<div class="12u">
+					
 						<!-- Header -->
 						<header id="header">
 							<div class="inner">
+							
 								<!-- Logo -->
 								<h1><a href="index.html" class="mobileUI-site-name">Sushi Palace</a></h1>
+								
 								<!-- Nav -->
 								<nav id="nav" class="mobileUI-site-nav">
 									<ul>
@@ -89,6 +100,7 @@ $returnPage = $_SESSION['returnPage'];
 										} else {
 											?>
 											<li><a href="login.html">Login</a></li>
+
 											<?php
 										}
 										?>
@@ -100,6 +112,7 @@ $returnPage = $_SESSION['returnPage'];
 				</div>
 			</div>
 		</div>
+			
 		<!-- Main Wrapper -->
 		<div id="main-wrapper">
 			<div class="main-wrapper-style2">
@@ -107,52 +120,56 @@ $returnPage = $_SESSION['returnPage'];
 					<div class="5grid-layout">
 						<div class="row">
 							<div class="4u">
+							
 								<!-- Sidebar -->
 								<div id="sidebar">
 									<section>
 										<header>
 											<h4>MyPalace</h4>
-											<!-- User / Guest button -->
 											<?php 
 											if ( isset ( $_SESSION['loggedInID'] ) ) {
 												?>
-												<p>Sign out of your account</p>
+												<a href="lastOrder.php" class="button button-icon button-icon-info">Last Order</a>
+												</p>Sign out of your account<br>
 												<a href="logout.php" class="button button-icon button-icon-info">Logout</a>
 												<?php
 											} else {
 												?>
-												<p>Login to your account</p>
+												</p>Login to your account<br>
 												<a href="login.html" class="button button-icon button-icon-info">Login</a>
-												<?php
+											<?php
 											}
 											?>
 										</header>
+
 										<header>
+											<br>
 											1111 Palace St</br>
 											Victoria B.C.  V8M 5J7</br>
 											250-777-777</br>
 											Open 10am - 8pm every day!</br>
-											<a href="mailto:order@sushipalace.ca">order@sushipalace.ca</a></br><p>
+											<a href="mailto:order@sushipalace.ca">order@sushipalace.ca</a></br>
+											<p>
+											
 										</header>
-										<div>
-											Local Partnerships:<br>
-											<ul>
-												<li><a href="http://www.finestatsea.com/">Finest At Sea</a></li>
-												<li><a href="http://www.floatingfishstore.com/">The Fish Store</a></li>
-												<li><a href="http://www.1fish2fish.ca/">1Fish2Fish</a></li>
-											</ul>
-											<span style="font-style: italic"><p>
-												All our seafood is regionally sourced<br>
-												from OceanWise partners.<br>
-												We buy only organic ingredients for rice,<br>
-												vegetables, and condiments.<br>
-											</span>
-										</div>
+
+										Local Partnerships:<br>
+										<ul>
+											<li><a href="http://www.finestatsea.com/">Finest At Sea</a></li>
+											<li><a href="http://www.floatingfishstore.com/">The Fish Store</a></li>
+											<li><a href="http://www.1fish2fish.ca/">1Fish2Fish</a></li>
+										</ul>
+										<p><span style="font-style: italic">
+										All our seafood is regionally sourced from OceanWise partners.<br>
+										We buy only organic ingredients for rice, vegetables, and condiments.<br>
+										</span>
+									</section>
 									</section>
 								</div>
 							</div>
 							<div class="8u mobileUI-main-content">
 								<div id="content">
+
 									<!-- Content -->
 									<article>
 										<header>
@@ -164,7 +181,7 @@ $returnPage = $_SESSION['returnPage'];
 										if ( $query ) {
 										
 											print "<form method='post' action='addToCart.php?action=add'>";
-											print "<table><tr>";
+											print "<table id=\"orderlist\"><tr>";
 											
 											mysql_data_seek ( $query, 0 );		//$query grabs rows of [category, product_id, product_name AS 'Item', price AS 'Price'] 
 											$fetched_row = "";
@@ -217,14 +234,12 @@ $returnPage = $_SESSION['returnPage'];
 												
 												$selected_qty = 0;
 												
-												// Check to see if an item is already in the cart
 												if ( isset ( $_SESSION['ordered'][$row_label] ) ) {
 													if ( $_SESSION['ordered'][$row_label] > 0 ) {
 														$selected_qty = $_SESSION['ordered'][$row_label];
 													}
 												}
 												
-												// Displays a blank label next to unordered items
 												if ( $selected_qty == 0 ) {
 													print "<td width=\"10%\" align=\"left\">
 														<select name=\"$row_label\">
@@ -241,8 +256,6 @@ $returnPage = $_SESSION['returnPage'];
 														</select>
 														</td>";
 													print "</tr><tr>";
-
-												// Displays the qty ordered previously in the session
 												} else {
 													print "<td width=\"10%\" align=\"left\">
 														<select name=\"$row_label\">
@@ -292,6 +305,7 @@ $returnPage = $_SESSION['returnPage'];
 				</div>
 			</div>
 		</div>			
+
 		<!-- Footer Wrapper -->
 		<div id="footer-wrapper">
 			<footer id="footer" class="5grid-layout">

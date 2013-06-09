@@ -1,13 +1,27 @@
 <?php
+/*
+ Program Name  :       addToCart.php
+ Author name   :       Mayumi Connor
+ Date Created  :       May 3, 2013
+ Date Modified :       Jun 4, 2013
+ Description   :
+ This program add an item to the shopping cart and display the current shopping cart values. Allow change the item quality and delete items from the shopping cart
+*/
 
-require ( "../credentials.php" );
+//session start
 include_once ( "../session.php" );
 
+// Connect to the MySQL server.
+require ( "../credentials.php" );
+
 $LinkID = mysql_connect ( $req_server, $req_username, $req_password );
+
+// Die if no connect
 if ( !$LinkID ) {
 	die( 'Could not connect: ' . mysql_error ( ) );
 }
 
+// Choose the DB and run a query.
 $db_selected = mysql_select_db ( 'sushiC199' );
 if ( !$db_selected ) {
     die( 'Could not select database: ' . mysql_error ( ) );
@@ -73,16 +87,18 @@ $_SESSION['returnPage'] = "addToCart.php";
 									<li><a href="index.html">Home</a></li>
 									<li><a href="menu.html">Menu</a></li>
 									<li class="current_page_item"><a href="order.html">Order</a></li>
-									<?php 
+<?php 
+// change the link 'login' to 'logout' if it is loggedInID
+
 										if ( isset ($_SESSION['loggedInID'] ) ) {
-											?>
+										?>
 											 <li><a href="logout.php">Logout</a></li>
-											<?php
+										<?php
 										} else {
-											?>
+										?>
 											<li><a href="login.html">Login</a></li>
 
-											<?php
+										<?php
 										}
 										?>
 								</ul>
@@ -111,7 +127,7 @@ $_SESSION['returnPage'] = "addToCart.php";
 									<p>Our goal in life: to make the best sushi in the world!
 										Enjoy any of our sushi! open 10:00 to 20:00 every day</p>
 									<footer>
-										<a href="#" class="button button-icon button-icon-info">Order Sushi</a>
+										<a href="#" class="button button-icon button-icon-check">Order Sushi</a>
 									</footer>
 								</section>
 								<section>
@@ -136,13 +152,15 @@ $_SESSION['returnPage'] = "addToCart.php";
 		<!-- Content -->
 		<article>
 <?php
+//get the action for the shopping cart to "add", "delete" or "update" items
 $action = $_GET['action'];
 switch ($action) {
+	//get items from the order page
 	case 'add':
-
 	$_SESSION['ordered'] = $_POST;
-	//print_r($_SESSION['ordered']);
+
 	break;
+	//delete items from the shopping cart
 	case 'delete':
 		if ($_SESSION['ordered']) {
 			foreach($_SESSION['ordered'] as $key => $value){
@@ -152,6 +170,7 @@ switch ($action) {
 			}
 		}
 		break;
+	//update the quality from the shopping cart
 	case 'update':
 	if ($_SESSION['ordered']) {
 		foreach ($_POST as $postkey=>$postvalue) {
@@ -174,39 +193,37 @@ function showCart() {
 
 if ( isset ($_SESSION['ordered'])) {
 
-//if ( isset ( $_POST ) ) || if  isset ( $_GET ) ) {
-								
-										//$_SESSION['ordered'] = $_POST;
-										//print_r($_SESSION['ordered']);
 
 $subtotal = null;
 			
-
+//display the current shopping cart values
 print "<div id=\"items\">";
 print "<h1>My Cart</h1><br>";	 
+
 print "<form method='post' action='addToCart.php?action=update'>";
 
-print "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" border=\"0\"><tr><span class=\"byline\">";
-print "<th width=\"30%\" align=\"left\">ITEM<h3></h3></th>";
-print "<th width=\"20%\" align=\"left\">AMOUNT<h3></h3></th>";
-print "<th width=\"50%\" align=\"left\">UNIT PRICE<h3></h3></th>";
-print "</span></tr></table>";
 
 	// the number of items
 	$cnt = 1;
-										foreach ( $_SESSION['ordered'] as $key => $value) {
-										
-											if ( $value > 0 ) {
+	
+	//get the current shopping cart values and key
+	foreach ( $_SESSION['ordered'] as $key => $value) {
+			
+												if ( $value > 0 ) {
 
-												$table_result = mysql_query ( "SELECT product_name, price FROM PRODUCT_TBL WHERE product_id = $key" );
-												mysql_data_seek ( $table_result, 0 );
-												$row_result = mysql_fetch_row ( $table_result );
-																						$price_displayed = false;
+			// Assemble the SQL query
+			$table_result = mysql_query ( "SELECT product_name, price FROM PRODUCT_TBL WHERE product_id = $key" );
+			
+			// Excute sql query
+			mysql_data_seek ( $table_result, 0 );
+													$row_result = mysql_fetch_row ( $table_result );
+													$price_displayed = false;
 
-												foreach ( $row_result as $foo ) {  // $row_result has 2 entries, 'product_name' and 'price'.
-										
-											if ( $price_displayed == false ) {
+													foreach ( $row_result as $foo ) {  
+			// $row_result has 2 entries, 'product_name' and 'price'.
+			if ( $price_displayed == false ) {
 														print "<div class=\"item\" id=\"item$cnt\">";
+
 				print "<div class=\"name\" ><span id=\"name$cnt\">";														print " $foo &nbsp; ";
 				
 				print "</span></div>";
@@ -224,15 +241,14 @@ print "</span></tr></table>";
 			        echo $i."</option>";
 			    }
 			    print "</select></div>";
-			//print "<div class=\"qty\"  ><input type=\"text\" name=\"qty$key\" value=\"$value\" size=\"3\" maxlength=\"3\" /></div>";
 
 
 				$price_displayed = true;
 													}
 
 												}
-																						$line_total = $foo * $value;  // this works because $foo is set to price when the foreach is exited
-		
+												//calcuate the total value
+		$line_total = $foo * $value;  
 												$subtotal += $line_total;
 										
 		print "<div class=\"price\">";
@@ -242,6 +258,7 @@ print "</span></tr></table>";
 		print "</span></div>";
 									
 		print "<div class=\"del\"  ><a href=\"addToCart.php?action=delete&id=$key\" class=\"r\">Remove</a></div>";
+	
 		print "</div> ";
 		
 	    // count items
@@ -253,32 +270,33 @@ print "</span></tr></table>";
 										print " </div>";
 
 
-
+	//format the total value
 	$formattedTotal = number_format($subtotal, 2, '.', '');
+	//if  there are items in the shopping cart, calculate the total value
+	if ($subtotal !=0){
+		print "<div id=\"total\">Total Cost: ";
+		print "\$";
+		print "<span id=\"cost\">$formattedTotal";
+		print "</span> ";
+		print "</div>";
+		print "<div><button type=\"submit\" class=\"button button button-icon button-icon-check\">Update cart</button></div>";
 
-if ($subtotal !=0){
-	print "<div id=\"total\">Total Cost: ";
-	print "\$";
-	print "<span id=\"cost\">$formattedTotal";
-	print "</span> ";
-	print "</div>";
-	print "<div><button type=\"submit\">Update cart</button></div>";
-	print "</form>";
-	print "<br>";																			print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
-											print "<a href=\"checkout.html\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";
+		print "</form>";
+		print "<br>";																			print "<a href=\"order.html\" class=\"button button-icon button-icon-larrow\">Confirm & Continue Shopping</a>";
+												print "<a href=\"checkout.html\" class=\"button button button-icon button-icon-check\">Confirm & Purchase</a>";
 
-}else{
-											print "<h2>Your Cart is empty</h2>";	
-	print "<a href=\"order.html\" class=\"button button-big button-icon button-icon-rarrow\">Order</a>";
- }
-								
-									
-																				}
+
+	//if not, the shopping cart is empty
+	}else{
+												print "<h2>Your Cart is empty</h2>";	
+		print "<a href=\"order.html\" class=\"button button-big button-icon button-icon-rarrow\">Order</a>";
+	 }
+																					}
 									
 }
 
 
-
+//Display the shopping cart
 echo showCart();
 
 

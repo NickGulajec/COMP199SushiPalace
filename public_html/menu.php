@@ -1,5 +1,15 @@
 <?php
+/*
+ Program Name  :       menu.php
+ Author name   :       Mayumi Connor
+ Date Created  :       May 3, 2013
+ Date Modified :       Jun 4, 2013
+ Description   :
+ This program runs queries against the sushiC199 DB and display the
+menu on a web page
+*/
 
+//session start
 include_once ( "../session.php" );
 
 // Connect to the MySQL server.
@@ -12,7 +22,6 @@ if (!$LinkID) {
 	die('Could not connect: ' . mysql_error());
 }
 // Choose the DB and run a query.
-//mysql_select_db("comp170", $LinkID);
 mysql_select_db('sushiC199');
 
 // Assemble the SQL query
@@ -124,7 +133,7 @@ $_SESSION['returnPage'] = "menu.php";
 											Enjoy any of our sushi! open 10:00 to 20:00 every day
 										</p>
 										<footer>
-											<a href="#" class="button button-icon button-icon-info">Order Sushi</a>
+											<a href="order.php" class="button button-icon button-icon-check">Order Sushi</a>
 										</footer>
 									</section>
 									<section>
@@ -154,7 +163,7 @@ $_SESSION['returnPage'] = "menu.php";
 									<article>
 										<header class="major">
 											<h2>MENU</h2>
-											<span class="byline">Monday and Friday get $1 off for party platter!!</span>
+											<span class="byline">Monday and Tuesday get $1 off for party platter!!</span>
 										</header>
 										<span class="image image-full"><img src="images/C789_unitoikuramaguro.png" width="200" height="400" alt="" /></span>
 										
@@ -170,35 +179,39 @@ $_SESSION['returnPage'] = "menu.php";
 										mysql_data_seek ($result, 0);
 
 										// Print the column labels
-										print "<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" border=\"0\"><tr><span class=\"byline\">";
+										print "<table  id=\"menulist\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" border=\"0\">";
+										print "<tr><span class=\"byline\">";
 										for($i = 0; $i < mysql_num_fields($result); $i++) {
 											$field_info = mysql_fetch_field($result, $i);
 											if ($field_info->name == 'ITEM') {
-													print "<td width=\"80%\" align=\"left\"><h3>$field_info->name</h3></td>";
+												print "<th width=\"80%\" align=\"left\"><h3>$field_info->name</h3></th>";
 											}elseif ($field_info->name == 'PRICE') {
-													print "<td width=\"20%\" align=\"left\"><h3>$field_info->name</h3></td>";
+												print "<th width=\"20%\" align=\"left\"><h3>$field_info->name</h3></th>";
 											}
 										}
-										print "</tr><tr>";
+										print "</tr>";
+										print "<tr>";
 
 										while ($row=mysql_fetch_assoc($result)) {
 											// remember this row's category
 											$category = $row['CATEGORY'];
 											// compare it to the previous row's category
 											if ( $category != $category_old ) {
-												print"<td colspan= 2 width=\"100%\" align=\"left\"><h3>";
+												print"<th colspan= 2 width=\"100%\" align=\"left\"><h3>";
 												print($row['CATEGORY']);
-												print"</h3></td></tr>";
+												print"</h3></th></tr>";
 												$category_old = $row['CATEGORY'];
 											}
 
-											print"<tr>";
+											print"<tr class=\"odd\">";
 											print"<td width=\"70%\" align=\"left\">";
 											print($row['ITEM']);
 											print"</td>";
 											print"<td width=\"30%\" align=\"left\">$";
-											print($row['PRICE']);
+	$formattedTotal = number_format($row['PRICE'], 2, '.', '');
+	print($formattedTotal);
 											print"</td>";
+	print"</tr>";
 											print"<tr><td colspan= 2 width=\"100%\" align=\"left\"><font size=\"2\" color=\"green\">";
 											print($row['description']);
 											print"</font></td></tr>";
