@@ -207,6 +207,14 @@ $returnPage = $_SESSION['returnPage'];
 					</div>
 					<div class="row">
 						<div class="12u">
+							<div class="row">
+							<center>
+								<a href="index.html">Home</a>&nbsp;&nbsp;&nbsp;
+								<a href="menu.html">Menu</a>&nbsp;&nbsp;&nbsp;
+								<a href="order.html">Order</a>&nbsp;&nbsp;&nbsp;
+								<a href="login.html">Login</a>
+							</center>
+						</div>
 							<div id="copyright">
 								&copy; Untitled. All rights reserved | Images: <a href="http://fotogrph.com/">Fotogrph</a> + <a href="http://iconify.it/">Iconify.it</a> | Design: <a href="http://html5up.net/">HTML5 Up!</a>
 							</div>

@@ -1,8 +1,13 @@
 <?php
-
+/*
+ Program Name  :        alreadyRegistered.php
+ Author name   :        Nick Gulajec
+ Date Created  :        June 02, 2013
+ Date Modified :        June 10, 2013
+ Description   :		Basic page that informs the user their supplied email address is already in the database.
+  						Navigation from checkout_step2.php
+ */
 include_once ( "../session.php" );
-
-
 ?>
 
 <!--

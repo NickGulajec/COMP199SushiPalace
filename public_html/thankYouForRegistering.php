@@ -1,5 +1,12 @@
 <?php
-
+/*
+ Program Name  :        thankYouForRegistering.php
+ Author name   :        Nick Gulajec
+ Date Created  :        June 02, 2013
+ Date Modified :        June 10, 2013
+ Description   :		Basic page that informs the user their registration was successful
+ 						Navigation from checkout_step2.php
+ */
 include_once ( "../session.php" );
 
 ?>

@@ -180,7 +180,7 @@ $query = mysql_query ( "
 
 													if ( $goodPhoneNumber ) {
 
-														$_SESSION['phonenum'] = $goodPhoneNumber;
+														$_SESSION['phonenum'] = $phonenum;
 
 													} else {
 
@@ -223,7 +223,9 @@ $query = mysql_query ( "
 												
 											}
 											
-											commitToDatabases(0);  // guest has customer_ID of zero
+											recordGuestInCustomerTable();
+											$ID = retrieveGuestID();
+											commitToDatabases($ID); 
 
 											echo "<br> Order Recieved at ".$order_date;
 											echo "<br> Thank You! <p> Your order number is: ".$order_id."<p>Please complete payment with PayPal, and we'll start making your sushi!<p>";
@@ -273,6 +275,14 @@ $query = mysql_query ( "
 			<footer id="footer" class="5grid-layout">
 				<div class="row">
 					<div class="12u">
+						<div class="row">
+							<center>
+								<a href="index.html">Home</a>&nbsp;&nbsp;&nbsp;
+								<a href="menu.html">Menu</a>&nbsp;&nbsp;&nbsp;
+								<a href="order.html">Order</a>&nbsp;&nbsp;&nbsp;
+								<a href="login.html">Login</a>
+							</center>
+						</div>
 						<div id="copyright">
 							&copy; 2013 ConFulGul  All rights reserved | Images: <a href="http://fotogrph.com/">Fotogrph</a> + <a href="http://iconify.it/">Iconify.it</a> | Design Template: <a href="http://html5up.net/">HTML5 Up!</a>
 						</div>
@@ -327,6 +337,44 @@ function payPalButton() {
 		<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 	</form>
 	<?php
+}
+
+function recordGuestInCustomerTable() {
+
+	$fname = $_SESSION['fname'];
+	$phonenum = $_SESSION['phonenum'];
+	
+	if ( isset ( $_SESSION['address'] ) ) {
+	
+		$address = $_SESSION['address'];
+		
+	}
+	
+	if ( isset ( $_SESSION['address'] ) ) {
+	
+		mysql_query ( " INSERT INTO CUSTOMER_TBL (first_name, customer_address, customer_phone_no) VALUES ('$fname','$address','$phonenum') ");
+		
+	} else {
+	
+		mysql_query ( " INSERT INTO CUSTOMER_TBL (first_name, customer_phone_no) VALUES ('$fname','$phonenum') ");
+		
+	}
+	
+}
+
+function retrieveGuestID() {
+	
+	$ret;
+	
+	$table_result = mysql_query ( "SELECT customer_id FROM CUSTOMER_TBL ORDER BY customer_id DESC" );
+	
+	mysql_data_seek ( $table_result, 0 );
+	$row_result = mysql_fetch_row ( $table_result );
+	
+	$ret = $row_result[0];
+	
+	return $ret;
+
 }
 
 ?>

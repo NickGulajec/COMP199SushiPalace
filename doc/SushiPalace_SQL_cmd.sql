@@ -1,20 +1,24 @@
-/***********************************
- Sushi Palace SQL Table Data Dump
+/***
+ Program Name  :        SushiPalace_SQL_cmd.sql
+ Author name   :        Mayumi Connor, Ian Fulton, and Nicholas Gulajec
+ Date Created  :        April 09, 2013
+ Date Modified :        June 10, 2013
+ Description   :        "sushiC199" database SQL commands
+                        -Creates tables
+                        -Populates menu with items to order
+                        -Inserts the developers as the first 3 customers
 
- Developed by Mayumi Connor, Ian Fulton, and Nicholas Gulajec
- For Deid Reimer and C199, April-June 2013 Q3 Camosun College
- Database: sushiC199
- **********************************/
+                        NOTE: last set of commands is for destroying the tables,
+                              careful what is copy/pasted.
+ ***/
 
 /*** Create Table Commands ***/
 
 CREATE TABLE ORDER_PRODUCT_TBL 
   (order_id int(10) not null,
    product_id int(10) not null,
-   quantity int(10),
-   payment_type bit(1)
+   quantity int(10) not null
 );
-/*** Removed primary key constraint "CONSTRAINT order_id_pk PRIMARY KEY (order_id)" because the PK is actually a 2-field key and couldn't insert into table properly ***/
 
 CREATE TABLE CUSTOMER_TBL 
   (customer_id int(10) not null AUTO_INCREMENT,
@@ -40,24 +44,13 @@ CREATE TABLE ORDER_TBL
   (order_id int(10) not null AUTO_INCREMENT,
    customer_id int(10) not null,
    order_date timestamp,
+   payment_received bit(1),
    CONSTRAINT order_id_pk PRIMARY KEY (order_id)
 );
 
-/*** Alter ORDER_TBL ***/
-
-ALTER TABLE ORDER_TBL
-ADD CONSTRAINT  fk_customer_id
-FOREIGN KEY(customer_id) REFERENCES CUSTOMER_TBL(customer_id);
-
-/*** Alter ORDER_PRODUCT_TBL ***/
-
-ALTER TABLE ORDER_PRODUCT_TBL
-ADD CONSTRAINT  fk_product_id
-FOREIGN KEY(product_id) REFERENCES PRODUCT_TBL(product_id);
-
-
 
 /*** Menu Table Insert  ***/
+
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Kappa Maki",2.95,"Sushi Roll","Cucumber roll");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Oshinko Maki",3.75,"Sushi Roll","Japanese pickles roll");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Tekka Maki",3.95,"Sushi Roll","Tuna roll");
@@ -65,16 +58,12 @@ INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "S
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Negitoro",4.25,"Sushi Roll","Tuna & green onion");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Futo Maki",6.55,"Sushi Roll","Crab, egg, assorted vegetables in roll");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Sakura Roll",6.55,"Sushi Roll","Spicy mayo, salmon, avocado, tempura bit");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Rob's Roll",6.55,"Sushi Roll","Tempura prawn, yam & sauce in roll");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "California Roll",4.65,"Sushi Roll","Imitation crab, avocado, and sesame seed");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Avocado Roll",4.25,"Sushi Roll","Avocado, sesame seed");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Yam Roll",5.45,"Sushi Roll","Tempura yam & sauce in roll");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Vegetable Roll",4.95,"Sushi Roll","Lettuce, cucumber, pickle, shitake mushroom, avocado, sesame seed");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Yamakado Roll",5.95,"Sushi Roll","Yam and avocado");
+INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Yamakado Roll",4.95,"Sushi Roll","Yam temura and avocado");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Dynamite Roll",5.95,"Sushi Roll","Tempura prawn, cucumber & sauce");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Canadian Roll",5.95,"Sushi Roll","Smoked salmon, cucumber, onion");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Victoria Roll",6.55,"Sushi Roll","Tuna, salmon, shrimp, and tobiko caviar");
-INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Vancouver Roll",5.95,"Sushi Roll","Imitation crab, shrimp, avocado");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "B.C. Roll",5.95,"Sushi Roll","BBQ skin salmon, scallop, imitation crab, cucumber");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Tokyo Roll",6.95,"Sushi Roll","BBQ eel, cucumber, sesames seed, and tobiko caviar");
 INSERT INTO PRODUCT_TBL ( product_name, price ,category,description) VALUES ( "Spider Roll",7.95,"Sushi Roll","Tempura soft shell crab, cucumber, lettuce, tobiko caviar, and sauce");
@@ -103,16 +92,6 @@ INSERT INTO CUSTOMER_TBL (first_name, last_name, customer_address, customer_phon
 	VALUES ( "Nick", "Gulajec", "789 Third St.", 789, "nickg66@gmail.com", "testpass");
 
 	
-/*** Order Table Insert (test only, normally submitted via web, test values only)  ***/
-
-INSERT INTO ORDER_TBL ( customer_id ) VALUES ( 1 );
-
-
-/*** ORDER_PRODUCT_TBL Insert (test data) ***/
-
-INSERT INTO ORDER_PRODUCT_TBL ( order_id, product_id, quantity ) VALUES ( 1, 1, 2 );
-INSERT INTO ORDER_PRODUCT_TBL ( order_id, product_id, quantity ) VALUES ( 1, 2, 1 );
-INSERT INTO ORDER_PRODUCT_TBL ( order_id, product_id, quantity ) VALUES ( 1, 3, 3 );
 
 /*** Clean Up Schema ***/
 
@@ -120,34 +99,3 @@ DROP TABLE ORDER_PRODUCT_TBL;
 DROP TABLE ORDER_TBL; 
 DROP TABLE CUSTOMER_TBL; 
 DROP TABLE PRODUCT_TBL; 
-
-
-
-
-/*** other stuff
-
-select *
-from information_schema.table_constraints;
-
-***/
-
-
-
-/*** other stuff
-
-change COLUMN NAME
-
-ALTER TABLE CUSTOMER_TBL CHANGE COLUMN customer_adress customer_address varchar(50);
-
-***/
-
-/*** other stuff
-
-create table sales(
-id int, name varchar(10), d date, index(name),
-  -> 
-/*** Alter ORDER_TBL ***/
-
-ALTER TABLE ORDER_TBL
-ADD CONSTRAINT  fk_customer_id
-FOREIGN KEY(customer_id) REFERENCES CUSTOMER_TBL(customer_id) engine=InnoDB;

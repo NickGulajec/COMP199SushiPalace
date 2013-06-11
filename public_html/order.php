@@ -297,6 +297,14 @@ $returnPage = $_SESSION['returnPage'];
 			<footer id="footer" class="5grid-layout">
 				<div class="row">
 					<div class="12u">
+						<div class="row">
+							<center>
+								<a href="index.html">Home</a>&nbsp;&nbsp;&nbsp;
+								<a href="menu.html">Menu</a>&nbsp;&nbsp;&nbsp;
+								<a href="order.html">Order</a>&nbsp;&nbsp;&nbsp;
+								<a href="login.html">Login</a>
+							</center>
+						</div> 
 						<div id="copyright">
 							&copy; 2013 ConFulGul  All rights reserved | Images: <a href="http://fotogrph.com/">Fotogrph</a> + <a href="http://iconify.it/">Iconify.it</a> | Design Template: <a href="http://html5up.net/">HTML5 Up!</a>
 						</div>

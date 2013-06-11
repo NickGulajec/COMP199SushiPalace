@@ -1,5 +1,12 @@
 <?php
-
+/*
+ Program Name  :        logout.php
+ Author name   :        Nick Gulajec
+ Date Created  :        June 02, 2013
+ Date Modified :        June 10, 2013
+ Description   :		Lets the user know they have logged out
+						Resets $_SESSION['ordered'] and $_SESSION['loggedInID']
+*/
 include_once ( "../session.php" );
 
 $_SESSION['returnPage'] = "checkout.php";
